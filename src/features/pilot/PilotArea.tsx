@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Loader2, Save, ArrowLeft, User, Bike, Award, Tag } from "lucide-react";
+import { Loader2, Save, ArrowLeft, User, Bike, Award, Tag, ChevronRight } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
@@ -10,6 +10,17 @@ import { fetchMyPilot, updatePilot, createPilot } from "../../lib/pilots";
 import { supabase } from "../../lib/supabase";
 import { logout } from "../../lib/auth";
 import type { Pilot } from "../../types";
+import { getMyRegistrations } from "../../services/registrations";
+import { STEP_LABELS, PAYMENT_LABELS } from "../../domain/registration/stateMachine";
+import type { EventRegistration, PaymentStatus } from "../../types/events";
+
+const PAYMENT_DOT: Record<PaymentStatus, string> = {
+  pending: "bg-amber-500",
+  paid: "bg-emerald-500",
+  refunded: "bg-blue-500",
+  cancelled: "bg-rose-500",
+  na: "bg-zinc-500",
+};
 
 const CATEGORIES = ["MX1", "MX2", "MX3", "MXF", "MX_VET", "MX_JR", "MX_MINI", "ENDURO", "TRAIL"];
 
@@ -19,6 +30,7 @@ export function PilotArea() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [registrations, setRegistrations] = useState<EventRegistration[]>([]);
 
   const [nickname, setNickname] = useState("");
   const [nationality, setNationality] = useState("Brasil");
@@ -46,6 +58,12 @@ export function PilotArea() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    getMyRegistrations()
+      .then(setRegistrations)
+      .catch(console.error);
   }, []);
 
   const handleSave = async () => {
@@ -195,6 +213,41 @@ export function PilotArea() {
             </Button>
           </div>
         </div>
+
+        <Card className="mt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Tag className="w-4 h-4 text-rose-500" />
+            <h2 className="font-display font-semibold text-base text-zinc-100">Minhas inscrições</h2>
+          </div>
+          {registrations.length === 0 ? (
+            <p className="text-sm text-zinc-500">Você ainda não se inscreveu em eventos.</p>
+          ) : (
+            <div className="space-y-3">
+              {registrations.map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => navigate(`/piloto/inscricao/${r.id}`)}
+                  className="w-full flex items-center justify-between gap-3 p-3 rounded-[6px] bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-colors text-left"
+                >
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-zinc-200 truncate">{r.eventTitle}</p>
+                    <p className="text-xs font-mono text-zinc-500">{r.registrationNumber}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-zinc-400">{STEP_LABELS[r.currentStep]}</span>
+                      <ChevronRight className="w-4 h-4 text-zinc-600" />
+                    </div>
+                    <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+                      <span className={`w-1.5 h-1.5 rounded-full ${PAYMENT_DOT[r.paymentStatus] ?? "bg-zinc-500"}`} />
+                      {PAYMENT_LABELS[r.paymentStatus]}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </Card>
 
         <div className="mt-8 p-4 bg-zinc-900/50 rounded-[6px] border border-zinc-800">
           <p className="text-xs text-zinc-600">

@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Calendar, MapPin } from "lucide-react";
 import { Badge } from "../../components/ui/Badge";
 import { Card } from "../../components/ui/Card";
-import { EVENTS } from "../../data/mock";
+import { fetchEvents } from "../../services/events";
+import type { EventSummary, EventStatus } from "../../types/events";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+type CalEvent = {
+  id: string;
+  slug: string;
+  name: string;
+  date: string;
+  endDate: string;
+  status: "upcoming" | "open" | "completed";
+  location: { city: string; state: string };
+};
+
+function toCalStatus(status: EventStatus): CalEvent["status"] {
+  if (status === "finished") return "completed";
+  if (status === "registration_open") return "open";
+  return "upcoming";
+}
 
 function EventStatusBadge({ status }: { status: string }) {
   if (status === "upcoming") return <Badge variant="info" size="sm">Em breve</Badge>;
@@ -18,7 +35,31 @@ function EventStatusBadge({ status }: { status: string }) {
 }
 
 export function CalendarPage() {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 7, 1)); // Aug 2025
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [events, setEvents] = useState<CalEvent[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    fetchEvents()
+      .then((data: EventSummary[]) => {
+        if (!active) return;
+        setEvents(
+          data.map((e) => ({
+            id: e.id,
+            slug: e.slug,
+            name: e.title,
+            date: e.startDate,
+            endDate: e.endDate,
+            status: toCalStatus(e.eventStatus),
+            location: { city: e.city, state: e.state },
+          }))
+        );
+      })
+      .catch((err) => console.error("[Calendar] erro ao carregar eventos:", err));
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -28,13 +69,13 @@ export function CalendarPage() {
   const startPad = monthStart.getDay();
   const paddedDays = [...Array(startPad).fill(null), ...days];
 
-  const eventsInMonth = EVENTS.filter((e) => {
+  const eventsInMonth = events.filter((e) => {
     const d = new Date(e.date);
     return isSameMonth(d, currentMonth);
   });
 
   const getEventsForDay = (day: Date) =>
-    EVENTS.filter((e) => isSameDay(new Date(e.date), day) || isSameDay(new Date(e.endDate), day));
+    events.filter((e) => isSameDay(new Date(e.date), day) || isSameDay(new Date(e.endDate), day));
 
   return (
     <div className="min-h-screen pt-20 bg-background">
@@ -158,9 +199,9 @@ export function CalendarPage() {
 
             {/* Full year events */}
             <div className="mt-6 pt-6 border-t border-border">
-              <h3 className="font-display font-semibold text-sm text-foreground mb-4">Todos os Eventos 2025</h3>
+              <h3 className="font-display font-semibold text-sm text-foreground mb-4">Todos os Eventos {currentMonth.getFullYear()}</h3>
               <div className="space-y-2">
-                {EVENTS.map((ev) => (
+                {events.map((ev) => (
                   <Link key={ev.id} to={`/eventos/${ev.slug}`} className="flex items-center gap-2 p-2 rounded-[4px] hover:bg-card transition-colors">
                     <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
                       ev.status === "open" ? "bg-emerald-500" :

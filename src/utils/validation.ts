@@ -23,7 +23,7 @@ export const registrationSchema = z.object({
   neighborhood: z.string().min(1, "Bairro é obrigatório"),
   city: z.string().min(1, "Cidade é obrigatória"),
   state: z.string().length(2, "Estado é obrigatório"),
-  country: z.string().default("Brasil"),
+  country: z.string(),
   complement: z.string().optional(),
   
   // Contato

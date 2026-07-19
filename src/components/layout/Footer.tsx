@@ -31,19 +31,16 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Plataforma</h4>
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
+              <Link to="/empresa" className="hover:text-foreground transition-colors">Empresa</Link>
+            </h4>
             <ul className="space-y-2">
-              {["Painel Admin", "Organizadores", "Pilotos", "Equipes", "Cronometragem", "Imprensa"].map((l) => (
-                <li key={l}><Link to="/admin" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{l}</Link></li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Empresa</h4>
-            <ul className="space-y-2">
-              {["Sobre", "Blog", "Parceiros", "Termos de Uso", "Privacidade", "Contato"].map((l) => (
-                <li key={l}><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{l}</a></li>
-              ))}
+              <li><Link to="/sobre" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Sobre</Link></li>
+              <li><Link to="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+              <li><Link to="/parceiros" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Parceiros</Link></li>
+              <li><Link to="/termos" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Termos de Uso</Link></li>
+              <li><Link to="/privacidade" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacidade</Link></li>
+              <li><Link to="/contato" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contato</Link></li>
             </ul>
           </div>
         </div>

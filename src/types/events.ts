@@ -1,7 +1,28 @@
 export type PublicationStatus = "draft" | "published" | "archived";
 export type EventStatus = "upcoming" | "registration_open" | "running" | "finished" | "cancelled";
+
+// Event statuses that allow pilot enrollment.
+export const ENROLLABLE_STATUSES: EventStatus[] = ["upcoming", "registration_open"];
+export function isEnrollmentOpen(status: EventStatus): boolean {
+  return ENROLLABLE_STATUSES.includes(status);
+}
 export type ScheduleType = "practice" | "qualifying" | "race" | "ceremony" | "break" | "other";
 export type SponsorTier = "platinum" | "gold" | "silver" | "bronze" | "media";
+
+// --- Registration domain (Sprint 1) ---
+// Keep these enums in sync with:
+//   - supabase/migrations/013_event_registration_flow.sql (CHECK constraints)
+//   - src/domain/registration/stateMachine.ts (STEP_ORDER)
+export type RegistrationStatus = "pending" | "approved" | "rejected" | "cancelled" | "waitlist";
+export type PaymentStatus = "pending" | "paid" | "refunded" | "cancelled" | "na";
+export type CurrentStep =
+  | "registration"
+  | "review"
+  | "payment"
+  | "approved"
+  | "checkin"
+  | "racing"
+  | "finished";
 
 export interface Championship {
   id: string;
@@ -70,6 +91,28 @@ export interface EventAttachment {
   mimeType: string;
   fileSize?: number;
   uploadedAt: string;
+}
+
+export interface EventRegistration {
+  id: string;
+  eventId: string;
+  pilotId: string;
+  registrationNumber?: string;
+  status: RegistrationStatus;
+  currentStep: CurrentStep;
+  paymentStatus: PaymentStatus;
+  createdAt: string;
+  confirmedAt?: string;
+  // Denormalized from pilots table at read time (admin list view)
+  pilotName: string;
+  pilotNumber: string;
+  category: string;
+  team?: string;
+  // Denormalized from events table at read time (pilot detail view)
+  eventTitle?: string;
+  eventSlug?: string;
+  eventStart?: string;
+  entryFee?: number;
 }
 
 export interface EventDetail {

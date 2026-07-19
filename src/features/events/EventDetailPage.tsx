@@ -10,7 +10,8 @@ import { Card } from "../../components/ui/Card";
 import { getEventBySlug } from "../../services/events";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import type { EventDetail, ScheduleType, SponsorTier } from "../../types/events";
+import type { EventDetail, ScheduleType } from "../../types/events";
+import { isEnrollmentOpen } from "../../types/events";
 
 const SCHEDULE_COLORS: Record<ScheduleType, string> = {
   practice: "text-blue-400 bg-blue-950",
@@ -84,7 +85,7 @@ export function EventDetailPage() {
     );
   }
 
-  const isOpen = event.eventStatus === "registration_open";
+  const isOpen = isEnrollmentOpen(event.eventStatus);
   const fillPct = Math.min((event.registeredPilots / Math.max(event.maxPilots, 1)) * 100, 100);
   const daysToDeadline = event.registrationClose
     ? Math.ceil((new Date(event.registrationClose).getTime() - Date.now()) / 86400000)
@@ -315,9 +316,15 @@ export function EventDetailPage() {
                 size="lg"
                 fullWidth
                 disabled={!isOpen}
-                onClick={() => navigate(`/eventos/${event.slug}`)}
+                onClick={() => navigate(`/eventos/${event.slug}/inscrever`)}
               >
-                {isOpen ? "Inscrever-se agora" : event.eventStatus === "finished" ? "Resultados" : "Em breve"}
+                {isOpen
+                  ? event.eventStatus === "registration_open"
+                    ? "Inscrever-se agora"
+                    : "Inscrever-se"
+                  : event.eventStatus === "finished"
+                    ? "Resultados"
+                    : "Detalhes"}
               </Button>
 
               <div className="mt-3 space-y-2">

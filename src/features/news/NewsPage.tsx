@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Search, Newspaper, ChevronRight, Eye } from "lucide-react";
 import { Badge } from "../../components/ui/Badge";
 import { Card } from "../../components/ui/Card";
-import { NEWS } from "../../data/mock";
+import { fetchNews } from "../../services/news";
+import type { NewsArticle } from "../../types";
 import { format } from "date-fns";
 
 const CATEGORY_LABELS = {
@@ -26,15 +27,33 @@ const CATEGORY_VARIANTS = {
 export function NewsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = NEWS.filter((n) => {
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    fetchNews({ status: "published" })
+      .then((data) => {
+        if (active) setArticles(data);
+      })
+      .catch((err) => console.error("[NewsPage] Erro ao carregar:", err))
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const filtered = articles.filter((n) => {
     const matchSearch = n.title.toLowerCase().includes(search.toLowerCase()) ||
       n.excerpt.toLowerCase().includes(search.toLowerCase());
     const matchCat = category === "all" || n.category === category;
     return matchSearch && matchCat;
   });
 
-  const featured = NEWS.find((n) => n.featured);
+  const featured = articles.find((n) => n.featured);
   const rest = filtered.filter((n) => !n.featured || search || category !== "all");
 
   return (
@@ -156,12 +175,16 @@ export function NewsPage() {
           ))}
         </div>
 
-        {filtered.length === 0 && (
+        {loading ? (
+          <div className="text-center py-20">
+            <p className="text-zinc-500 text-sm">Carregando notícias...</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <Newspaper className="w-10 h-10 text-zinc-700 mx-auto mb-3" />
             <p className="text-zinc-500 text-sm">Nenhuma notícia encontrada</p>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -7,9 +7,10 @@ import {
 import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { Card } from "../../components/ui/Card";
-import { NEWS } from "../../data/mock";
 import { getUpcomingEvents } from "../../services/events";
+import { fetchNews } from "../../services/news";
 import type { EventSummary } from "../../types/events";
+import type { NewsArticle } from "../../types";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -43,6 +44,7 @@ function EventStatusBadge({ status }: { status: string }) {
 export function HomePage() {
   const [upcomingEvents, setUpcomingEvents] = useState<EventSummary[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
+  const [featuredNews, setFeaturedNews] = useState<NewsArticle[]>([]);
 
   useEffect(() => {
     let active = true;
@@ -53,7 +55,14 @@ export function HomePage() {
     return () => { active = false; };
   }, []);
 
-  const featuredNews = NEWS.filter((n) => n.featured).slice(0, 3);
+  useEffect(() => {
+    let active = true;
+    fetchNews({ status: "published", featured: true })
+      .then((data) => { if (active) setFeaturedNews(data.slice(0, 3)); })
+      .catch((err) => { console.error("[Home] Erro ao carregar notícias:", err); });
+    return () => { active = false; };
+  }, []);
+
   const nextEventDate = upcomingEvents[0]?.startDate;
 
   return (
