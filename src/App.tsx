@@ -34,6 +34,7 @@ import { AdminLogs } from "./features/admin/AdminLogs";
 import { AdminUsers } from "./features/admin/AdminUsers";
 import { AdminNews } from "./features/admin/AdminNews";
 import { AdminGallery } from "./features/admin/AdminGallery";
+import { AdminConfiguracoes } from "./features/admin/AdminConfiguracoes";
 import { Forbidden } from "./pages/Forbidden";
 import { AwaitingProfile } from "./pages/AwaitingProfile";
 import { ROUTES } from "./lib/routes";
@@ -128,7 +129,7 @@ export default function App() {
               <Route path="galeria" element={<AdminGallery />} />
               <Route path="usuarios" element={<AdminUsers />} />
               <Route path="analytics" element={<AdminPlaceholder title="Analytics" />} />
-              <Route path="configuracoes" element={<AdminPlaceholder title="Configurações" />} />
+              <Route path="configuracoes" element={<AdminConfiguracoes />} />
             </Route>
 
             {/* Pilot area — protegido para pilot */}
