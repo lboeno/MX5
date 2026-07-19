@@ -1,0 +1,15 @@
+export const ROUTES = {
+  HOME: "/",
+  LOGIN: "/login",
+  REGISTER: "/registrar",
+  FORBIDDEN: "/403",
+  AWAITING_PROFILE: "/awaiting-profile",
+  ADMIN: "/admin",
+  ADMIN_EVENTS: "/admin/eventos",
+  ADMIN_PILOTS: "/admin/pilotos",
+  ADMIN_PAYMENTS: "/admin/pagamentos",
+  ADMIN_LOGS: "/admin/logs",
+  PILOTS: "/pilotos",
+  PILOT: "/piloto",
+  TEAM: "/equipe",
+} as const;
