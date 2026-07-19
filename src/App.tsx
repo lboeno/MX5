@@ -35,6 +35,7 @@ import { AdminUsers } from "./features/admin/AdminUsers";
 import { AdminNews } from "./features/admin/AdminNews";
 import { AdminGallery } from "./features/admin/AdminGallery";
 import { AdminConfiguracoes } from "./features/admin/AdminConfiguracoes";
+import { AdminRankings } from "./features/admin/AdminRankings";
 import { Forbidden } from "./pages/Forbidden";
 import { AwaitingProfile } from "./pages/AwaitingProfile";
 import { ROUTES } from "./lib/routes";
@@ -123,7 +124,7 @@ export default function App() {
               <Route path="pagamentos" element={<AdminPayments />} />
               <Route path="logs" element={<AdminLogs />} />
               <Route path="inscricoes" element={<AdminRegistrations />} />
-              <Route path="rankings" element={<AdminPlaceholder title="Rankings Admin" />} />
+              <Route path="rankings" element={<AdminRankings />} />
               <Route path="calendario" element={<AdminPlaceholder title="Calendário Admin" />} />
               <Route path="noticias" element={<AdminNews />} />
               <Route path="galeria" element={<AdminGallery />} />
