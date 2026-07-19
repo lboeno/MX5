@@ -37,6 +37,7 @@ import { AdminGallery } from "./features/admin/AdminGallery";
 import { AdminConfiguracoes } from "./features/admin/AdminConfiguracoes";
 import { AdminRankings } from "./features/admin/AdminRankings";
 import { AdminCalendario } from "./features/admin/AdminCalendario";
+import { AdminAnalytics } from "./features/admin/AdminAnalytics";
 import { Forbidden } from "./pages/Forbidden";
 import { AwaitingProfile } from "./pages/AwaitingProfile";
 import { ROUTES } from "./lib/routes";
@@ -130,7 +131,7 @@ export default function App() {
               <Route path="noticias" element={<AdminNews />} />
               <Route path="galeria" element={<AdminGallery />} />
               <Route path="usuarios" element={<AdminUsers />} />
-              <Route path="analytics" element={<AdminPlaceholder title="Analytics" />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="configuracoes" element={<AdminConfiguracoes />} />
             </Route>
 
