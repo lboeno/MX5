@@ -3,7 +3,6 @@ import type {
   Pilot,
   Championship,
   Payment,
-  GalleryPhoto,
   Registration,
   Sponsor,
   Log,
@@ -335,17 +334,6 @@ export const PAYMENTS: Payment[] = [
   { id: "pay5", pilotId: "p5", pilotName: "Vitor Rodrigues", eventId: "e2", eventName: "CBMX Etapa 2", amount: 380, method: "asaas", status: "refund", createdAt: "2025-08-18T11:20:00Z", paidAt: "2025-08-18T11:22:00Z", transactionId: "ASAAS-2025-789012", category: "MX2" },
   { id: "pay6", pilotId: "p6", pilotName: "Diego Costa", eventId: "e1", eventName: "CBMX Etapa 1", amount: 350, method: "pix", status: "paid", createdAt: "2025-07-15T08:30:00Z", paidAt: "2025-07-15T08:31:00Z", transactionId: "PIX-2025-003456", category: "MX1" },
   { id: "pay7", pilotId: "p7", pilotName: "Felipe Nunes", eventId: "e1", eventName: "CBMX Etapa 1", amount: 350, method: "mercado_pago", status: "cancelled", createdAt: "2025-07-10T13:00:00Z", category: "MX1" },
-];
-
-export const GALLERY: GalleryPhoto[] = [
-  { id: "g1", eventId: "e1", eventName: "CBMX Etapa 1", url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&auto=format", alt: "Rafael Andrade em ação na etapa 1", photographer: "André Fotos MX", takenAt: "2025-08-16T14:30:00Z", tags: ["MX1", "Andrade"], featured: true },
-  { id: "g2", eventId: "e1", eventName: "CBMX Etapa 1", url: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=400&h=300&fit=crop&auto=format", alt: "Lucas Feitosa na largada", photographer: "Paulo Clicks", takenAt: "2025-08-16T13:00:00Z", tags: ["MX1", "Feitosa"], featured: true },
-  { id: "g3", eventId: "e1", eventName: "CBMX Etapa 1", url: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop&auto=format", alt: "Beatriz Santos campeã MXF", photographer: "André Fotos MX", takenAt: "2025-08-16T17:00:00Z", tags: ["MXF", "Santos"], featured: true },
-  { id: "g4", eventId: "e1", eventName: "CBMX Etapa 1", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&auto=format", alt: "Largada geral da MX2", photographer: "Mariana Moto Fotografia", takenAt: "2025-08-16T15:30:00Z", tags: ["MX2"], featured: false },
-  { id: "g5", eventId: "e1", eventName: "CBMX Etapa 1", url: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=300&fit=crop&auto=format", alt: "Vitor Rodrigues voando sobre o jump", photographer: "Paulo Clicks", takenAt: "2025-08-16T15:45:00Z", tags: ["MX2", "Rodrigues"], featured: false },
-  { id: "g6", eventId: "e3", eventName: "Copa Sul Etapa Final", url: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=300&fit=crop&auto=format", alt: "Pódio geral da Copa Sul", photographer: "André Fotos MX", takenAt: "2025-06-29T18:30:00Z", tags: ["Copa Sul", "Pódio"], featured: true },
-  { id: "g7", eventId: "e3", eventName: "Copa Sul Etapa Final", url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&auto=format", alt: "Duelo emocionante na última bateria", photographer: "Mariana Moto Fotografia", takenAt: "2025-06-29T16:00:00Z", tags: ["Copa Sul"], featured: false },
-  { id: "g8", eventId: "e1", eventName: "CBMX Etapa 1", url: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&h=600&fit=crop&auto=format", thumbnail: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=400&h=300&fit=crop&auto=format", alt: "Vista aérea da pista de Cianorte", photographer: "Drone MX Brasil", takenAt: "2025-08-15T07:30:00Z", tags: ["Pista", "Aéreo"], featured: false },
 ];
 
 export const REGISTRATIONS: Registration[] = [

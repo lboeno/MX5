@@ -1,17 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
-import { GALLERY } from "../../data/mock";
+import { X, ChevronLeft, ChevronRight, ZoomIn, ImageIcon } from "lucide-react";
+import { fetchGallery } from "../../services/gallery";
+import type { GalleryPhoto } from "../../types";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export function GalleryPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>("all");
+  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const events = ["all", ...Array.from(new Set(GALLERY.map((g) => g.eventName).filter(Boolean)))];
-  const filtered = filter === "all" ? GALLERY : GALLERY.filter((g) => g.eventName === filter);
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    fetchGallery(filter === "all" ? {} : { eventName: filter })
+      .then((data) => {
+        if (active) setPhotos(data);
+      })
+      .catch((err) => console.error("[GalleryPage] Erro ao carregar:", err))
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [filter]);
+
+  const events = ["all", ...Array.from(new Set(photos.map((g) => g.eventName).filter(Boolean)))];
+  const filtered = photos;
 
   const navigate = (dir: 1 | -1) => {
     if (selected === null) return;
@@ -52,8 +71,18 @@ export function GalleryPage() {
         </div>
 
         {/* Masonry-style Grid */}
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
-          {filtered.map((photo, i) => (
+        {loading ? (
+          <div className="text-center py-20">
+            <p className="text-zinc-500 text-sm">Carregando fotos...</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-20">
+            <ImageIcon className="w-10 h-10 text-zinc-700 mx-auto mb-3" />
+            <p className="text-zinc-500 text-sm">Nenhuma foto encontrada</p>
+          </div>
+        ) : (
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+            {filtered.map((photo, i) => (
             <motion.div
               key={photo.id}
               initial={{ opacity: 0, scale: 0.97 }}
@@ -82,7 +111,8 @@ export function GalleryPage() {
               )}
             </motion.div>
           ))}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Lightbox */}
