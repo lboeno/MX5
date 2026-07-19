@@ -21,8 +21,8 @@ import { ptBR } from "date-fns/locale";
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-zinc-900 border border-zinc-700 rounded-[6px] px-3 py-2 text-xs">
-      <p className="text-zinc-400 mb-1">{label}</p>
+    <div className="bg-card border border-zinc-700 rounded-[6px] px-3 py-2 text-xs">
+      <p className="text-muted-foreground mb-1">{label}</p>
       {payload.map((p: any) => (
         <p key={p.name} className="font-mono" style={{ color: p.color }}>
           {p.name === "revenue" ? `R$ ${p.value.toLocaleString("pt-BR")}` : `${p.value} inscrições`}
@@ -79,8 +79,8 @@ export function AdminDashboard() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl text-white">Dashboard</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">
+          <h1 className="font-display font-bold text-2xl text-foreground">Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             Visão geral da plataforma · {loading ? "Carregando..." : "Atualizado agora há pouco"}
           </p>
         </div>
@@ -176,7 +176,7 @@ export function AdminDashboard() {
                     key={v}
                     onClick={() => setRevenueView(v)}
                     className={`px-2 py-1 text-[11px] rounded-[3px] transition-colors ${
-                      revenueView === v ? "bg-zinc-700 text-zinc-200" : "text-zinc-600 hover:text-zinc-400"
+                      revenueView === v ? "bg-zinc-700 text-foreground" : "text-muted-foreground/70 hover:text-muted-foreground"
                     }`}
                   >
                     {v === "area" ? "Área" : "Barras"}
@@ -238,8 +238,8 @@ export function AdminDashboard() {
         <Card padding="none">
           <div className="px-5 py-4 border-b border-zinc-800 flex items-center justify-between">
             <div>
-              <h3 className="font-display font-semibold text-sm text-zinc-100">Pagamentos Recentes</h3>
-              <p className="text-xs text-zinc-500 mt-0.5">Últimas transações</p>
+              <h3 className="font-display font-semibold text-sm text-foreground">Pagamentos Recentes</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Últimas transações</p>
             </div>
             <Link to="/admin/pagamentos">
               <Button variant="ghost" size="sm" iconRight={<ArrowRight className="w-3.5 h-3.5" />}>Ver todos</Button>
@@ -251,17 +251,17 @@ export function AdminDashboard() {
               return (
                 <div
                   key={payment.id}
-                  className="flex items-center gap-3 px-4 py-3 border-b border-zinc-800/60 last:border-0 hover:bg-zinc-900/30 transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 border-b border-border/60 last:border-0 hover:bg-muted/30 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                    <CreditCard className="w-3.5 h-3.5 text-zinc-400" />
+                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-zinc-200 truncate">{payment.pilotName}</p>
-                    <p className="text-[11px] text-zinc-600 font-mono truncate">{payment.eventName}</p>
+                    <p className="text-xs font-medium text-foreground truncate">{payment.pilotName}</p>
+                    <p className="text-[11px] text-muted-foreground/70 font-mono truncate">{payment.eventName}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-mono font-bold text-sm text-white">R$ {payment.amount}</p>
+                    <p className="font-mono font-bold text-sm text-foreground">R$ {payment.amount}</p>
                     <Badge variant={st.variant} size="sm">{st.label}</Badge>
                   </div>
                 </div>
@@ -274,8 +274,8 @@ export function AdminDashboard() {
         <Card padding="none">
           <div className="px-5 py-4 border-b border-zinc-800 flex items-center justify-between">
             <div>
-              <h3 className="font-display font-semibold text-sm text-zinc-100">Log do Sistema</h3>
-              <p className="text-xs text-zinc-500 mt-0.5">Atividades recentes</p>
+              <h3 className="font-display font-semibold text-sm text-foreground">Log do Sistema</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Atividades recentes</p>
             </div>
             <Link to="/admin/logs">
               <Button variant="ghost" size="sm" iconRight={<ArrowRight className="w-3.5 h-3.5" />}>Ver logs</Button>
@@ -283,11 +283,11 @@ export function AdminDashboard() {
           </div>
           <div>
             {(data?.recentLogs ?? []).map((log) => (
-              <div key={log.id} className="flex items-start gap-3 px-4 py-3 border-b border-zinc-800/60 last:border-0">
-                <Activity className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${LOG_LEVEL_STYLES[log.level] ?? "text-zinc-500"}`} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs text-zinc-300 truncate">{log.details}</p>
-                  <p className="text-[10px] text-zinc-600 font-mono mt-0.5">
+                <div key={log.id} className="flex items-start gap-3 px-4 py-3 border-b border-border/60 last:border-0">
+                  <Activity className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${LOG_LEVEL_STYLES[log.level] ?? "text-muted-foreground"}`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-foreground/80 truncate">{log.details}</p>
+                    <p className="text-[10px] text-muted-foreground/70 font-mono mt-0.5">
                     {log.userName} · {format(new Date(log.createdAt), "dd/MM/yyyy HH:mm", { locale: ptBR })}
                   </p>
                 </div>

@@ -4,10 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar, Trophy, Newspaper, MapPin, Users,
   Menu, X, LogIn, UserPlus, LogOut, User,
-  Flag, Zap,
+  Flag, Zap, Sun, Moon,
 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { ROUTES } from "../../lib/routes";
 
 const NAV_LINKS = [
@@ -25,6 +26,7 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, profile, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const isActive = (href: string) => location.pathname.startsWith(href);
 
   const profileHref =
@@ -69,6 +71,13 @@ export function Navbar() {
 
         {/* Right Actions */}
         <div className="hidden lg:flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            aria-label="Alternar tema"
+            className="w-8 h-8 flex items-center justify-center rounded-[5px] border border-zinc-700 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60 transition-colors"
+          >
+            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
           {isAuthenticated ? (
             <>
               <Link to={profileHref}>
@@ -114,7 +123,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="lg:hidden border-t border-zinc-800 bg-[#09090b] px-4 py-3"
+            className="lg:hidden border-t border-border bg-background px-4 py-3"
           >
             <nav className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => {
@@ -135,6 +144,13 @@ export function Navbar() {
                   </Link>
                 );
               })}
+              <button
+                onClick={() => { setMobileOpen(false); toggleTheme(); }}
+                className="flex items-center justify-center gap-2 w-full mt-2 pt-2 border-t border-border py-2.5 rounded-[5px] text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+              >
+                {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {theme === "dark" ? "Modo claro" : "Modo escuro"}
+              </button>
               <div className="flex gap-2 mt-2 pt-2 border-t border-zinc-800">
                 {isAuthenticated ? (
                   <>

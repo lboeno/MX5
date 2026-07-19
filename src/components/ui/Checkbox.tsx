@@ -20,7 +20,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             className={`w-4 h-4 rounded border-2 transition-all ${
               props.checked
                 ? "bg-rose-600 border-rose-600"
-                : "bg-zinc-900 border-zinc-700 group-hover:border-zinc-600"
+                : "bg-input border-border group-hover:border-border"
             }`}
           >
             {props.checked && (
@@ -31,7 +31,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           </div>
         </div>
         {label && (
-          <span className="text-sm text-zinc-300 group-hover:text-zinc-200 transition-colors">
+          <span className="text-sm text-foreground/80 group-hover:text-foreground transition-colors">
             {label}
             {required && <span className="text-rose-500 ml-1">*</span>}
           </span>

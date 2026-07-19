@@ -22,9 +22,9 @@ export function AwaitingProfile() {
     : "Seu perfil ainda não foi criado. Em alguns casos, pode levar alguns segundos.";
 
   return (
-    <div className="min-h-screen bg-[#09090b] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="text-center max-w-sm">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-card border border-border flex items-center justify-center">
           <span className="text-2xl text-zinc-600">?</span>
         </div>
         <h1 className="font-display font-bold text-2xl text-white mb-2">{title}</h1>

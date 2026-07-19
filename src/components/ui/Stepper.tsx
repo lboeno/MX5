@@ -10,7 +10,7 @@ export function Stepper({ steps, currentStep }: StepperProps) {
   return (
     <div className="w-full mb-8">
       <div className="flex items-center justify-between relative">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-zinc-800" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-muted" />
         <div 
           className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-rose-600 transition-all duration-300" 
           style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
@@ -27,15 +27,15 @@ export function Stepper({ steps, currentStep }: StepperProps) {
                   isCompleted
                     ? "bg-rose-600 border-rose-600 text-white"
                     : isCurrent
-                    ? "bg-[#111113] border-rose-600 text-rose-500"
-                    : "bg-[#111113] border-zinc-700 text-zinc-500"
+                    ? "bg-card border-rose-600 text-rose-500"
+                    : "bg-card border-border text-muted-foreground"
                 }`}
               >
                 {isCompleted ? <Check className="w-5 h-5" /> : step.icon}
               </div>
               <span 
                 className={`text-xs mt-2 font-medium hidden md:block ${
-                  isCurrent ? "text-rose-500" : isCompleted ? "text-zinc-300" : "text-zinc-600"
+                  isCurrent ? "text-rose-500" : isCompleted ? "text-foreground/80" : "text-muted-foreground/70"
                 }`}
               >
                 {step.label}
@@ -46,7 +46,7 @@ export function Stepper({ steps, currentStep }: StepperProps) {
       </div>
       <div className="flex justify-between mt-1 px-5">
         {steps.map((_, index) => (
-          <div key={index} className="hidden md:block text-[10px] text-zinc-600 text-center w-20">
+          <div key={index} className="hidden md:block text-[10px] text-muted-foreground/70 text-center w-20">
             {index === 0 && "Dados"}
             {index === 1 && "Emergência"}
             {index === 2 && "Competição"}

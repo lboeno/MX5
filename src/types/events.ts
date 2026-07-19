@@ -62,6 +62,16 @@ export interface EventSummary {
   championshipName?: string;
 }
 
+export interface EventAttachment {
+  id: string;
+  eventId: string;
+  name: string;
+  filePath: string;
+  mimeType: string;
+  fileSize?: number;
+  uploadedAt: string;
+}
+
 export interface EventDetail {
   id: string;
   slug: string;
@@ -72,8 +82,11 @@ export interface EventDetail {
   track?: Track;
   city: string;
   state: string;
+  address?: string;
+  organizer?: string;
   coverImage?: string;
   bannerImage?: string;
+  galleryImages?: string[];
   startDate: string;
   endDate: string;
   registrationOpen?: string;
@@ -84,6 +97,7 @@ export interface EventDetail {
   categories: string[];
   schedule: ScheduleItem[];
   sponsors: Sponsor[];
+  attachments: EventAttachment[];
   publicationStatus: PublicationStatus;
   eventStatus: EventStatus;
   isFeatured: boolean;
@@ -98,6 +112,11 @@ export interface EventFormData {
   trackId?: string;
   city: string;
   state: string;
+  address?: string;
+  organizer?: string;
+  coverFile?: File | null;
+  bannerFile?: File | null;
+  galleryFiles?: File[];
   startDate: string;
   endDate: string;
   registrationOpen?: string;
@@ -109,4 +128,5 @@ export interface EventFormData {
   categories: string[];
   schedule: Omit<ScheduleItem, "id">[];
   sponsors: Omit<Sponsor, "id">[];
+  attachments?: { name: string; file: File; filePath?: string; mimeType?: string; fileSize?: number }[];
 }

@@ -22,16 +22,16 @@ export function ResultsPage() {
   const event = EVENTS.find((e) => e.id === selectedEvent);
 
   return (
-    <div className="min-h-screen pt-20 bg-[#09090b]">
-      <div className="border-b border-zinc-800 py-10">
+    <div className="min-h-screen pt-20 bg-background">
+      <div className="border-b border-border py-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-2 text-xs text-zinc-600 font-mono mb-4">
             <Link to="/" className="hover:text-zinc-400">Início</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-zinc-400">Resultados</span>
           </div>
-          <h1 className="font-display font-bold text-4xl text-white mb-2">Resultados</h1>
-          <p className="text-zinc-500">Classificação oficial das corridas encerradas</p>
+            <h1 className="font-display font-bold text-4xl text-foreground mb-2">Resultados</h1>
+            <p className="text-muted-foreground">Classificação oficial das corridas encerradas</p>
         </div>
       </div>
 
@@ -48,7 +48,7 @@ export function ResultsPage() {
                 className={`flex-shrink-0 px-4 py-2 rounded-[5px] border text-sm transition-colors ${
                   selectedEvent === ev.id
                     ? "bg-rose-950 text-rose-300 border-rose-800"
-                    : "text-zinc-500 border-zinc-800 hover:border-zinc-600 hover:text-zinc-300"
+                    : "text-muted-foreground border-border hover:border-zinc-600 hover:text-foreground/80"
                 }`}
               >
                 {ev.name}
@@ -64,7 +64,7 @@ export function ResultsPage() {
               <Card className="flex items-center gap-3">
                 <Flag className="w-5 h-5 text-rose-500 flex-shrink-0" />
                 <div>
-                  <p className="text-[10px] font-mono text-zinc-600 uppercase">Categoria</p>
+                  <p className="text-[10px] font-mono text-muted-foreground uppercase">Categoria</p>
                   <div className="flex gap-1 flex-wrap mt-1">
                     {event.categories.slice(0, 2).map((c) => <Badge key={c} variant="outline" size="sm">{c}</Badge>)}
                   </div>
@@ -73,37 +73,37 @@ export function ResultsPage() {
               <Card className="flex items-center gap-3">
                 <Users className="w-5 h-5 text-blue-500 flex-shrink-0" />
                 <div>
-                  <p className="text-[10px] font-mono text-zinc-600 uppercase">Pilotos classificados</p>
-                  <p className="font-display font-bold text-lg text-white mt-0.5">{MOCK_RESULTS.filter((r) => !r.dnf).length}</p>
+                  <p className="text-[10px] font-mono text-muted-foreground uppercase">Pilotos classificados</p>
+                  <p className="font-display font-bold text-lg text-foreground mt-0.5">{MOCK_RESULTS.filter((r) => !r.dnf).length}</p>
                 </div>
               </Card>
               <Card className="flex items-center gap-3">
                 <Trophy className="w-5 h-5 text-amber-500 flex-shrink-0" />
                 <div>
-                  <p className="text-[10px] font-mono text-zinc-600 uppercase">Vencedor</p>
-                  <p className="font-display font-bold text-base text-white mt-0.5">{MOCK_RESULTS[0].pilotName}</p>
+                  <p className="text-[10px] font-mono text-muted-foreground uppercase">Vencedor</p>
+                  <p className="font-display font-bold text-base text-foreground mt-0.5">{MOCK_RESULTS[0].pilotName}</p>
                 </div>
               </Card>
             </div>
 
             {/* Results table — MX1 */}
-            <Card padding="none">
-              <div className="px-5 py-4 border-b border-zinc-800">
-                <h2 className="font-display font-semibold text-base text-white">Classificação Final — MX1 · 1ª Bateria</h2>
-                <p className="text-xs text-zinc-600 mt-0.5 font-mono">Resultado oficial homologado · Copa Sul Etapa Final · Cascavel/PR</p>
+              <Card padding="none">
+              <div className="px-5 py-4 border-b border-border">
+                <h2 className="font-display font-semibold text-base text-foreground">Classificação Final — MX1 · 1ª Bateria</h2>
+                <p className="text-xs text-muted-foreground mt-0.5 font-mono">Resultado oficial homologado · Copa Sul Etapa Final · Cascavel/PR</p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-zinc-800">
-                      <th className="text-left px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider">Pos.</th>
-                      <th className="text-left px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider">#</th>
-                      <th className="text-left px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider">Piloto</th>
-                      <th className="text-left px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider hidden md:table-cell">Equipe</th>
-                      <th className="text-right px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider">Tempo Total</th>
-                      <th className="text-right px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider hidden sm:table-cell">Diferença</th>
-                      <th className="text-right px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider hidden lg:table-cell">Melhor Volta</th>
-                      <th className="text-right px-4 py-3 text-[10px] font-mono text-zinc-600 uppercase tracking-wider">Pts</th>
+                    <tr className="border-b border-border">
+                      <th className="text-left px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Pos.</th>
+                      <th className="text-left px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider">#</th>
+                      <th className="text-left px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Piloto</th>
+                      <th className="text-left px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider hidden md:table-cell">Equipe</th>
+                      <th className="text-right px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Tempo Total</th>
+                      <th className="text-right px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider hidden sm:table-cell">Diferença</th>
+                      <th className="text-right px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider hidden lg:table-cell">Melhor Volta</th>
+                      <th className="text-right px-4 py-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Pts</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -113,8 +113,8 @@ export function ResultsPage() {
                         initial={{ opacity: 0, x: -8 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.04 }}
-                        className={`border-b border-zinc-800/60 last:border-0 transition-colors ${
-                          result.dnf ? "opacity-50" : i === 0 ? "bg-amber-950/10 hover:bg-amber-950/20" : "hover:bg-zinc-900/30"
+                        className={`border-b border-border/60 last:border-0 transition-colors ${
+                          result.dnf ? "opacity-50" : i === 0 ? "bg-amber-950/10 hover:bg-amber-950/20" : "hover:bg-muted/40"
                         }`}
                       >
                         <td className="px-4 py-3">
@@ -132,20 +132,20 @@ export function ResultsPage() {
                           <span className="font-mono font-bold text-rose-400">{result.pilotNumber}</span>
                         </td>
                         <td className="px-4 py-3">
-                          <p className="text-sm font-medium text-zinc-200">{result.pilotName}</p>
+                          <p className="text-sm font-medium text-foreground/80">{result.pilotName}</p>
                         </td>
                         <td className="px-4 py-3 hidden md:table-cell">
-                          <p className="text-xs text-zinc-500">{result.team}</p>
+                          <p className="text-xs text-muted-foreground">{result.team}</p>
                         </td>
-                        <td className="px-4 py-3 text-right font-mono text-sm text-zinc-300">{result.totalTime}</td>
+                        <td className="px-4 py-3 text-right font-mono text-sm text-foreground/80">{result.totalTime}</td>
                         <td className="px-4 py-3 text-right font-mono text-xs hidden sm:table-cell">
-                          <span className={result.gap === "–" ? "text-emerald-400" : result.gap === "DNF" ? "text-rose-500" : "text-zinc-500"}>
+                          <span className={result.gap === "–" ? "text-emerald-400" : result.gap === "DNF" ? "text-rose-500" : "text-muted-foreground"}>
                             {result.gap}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-right font-mono text-xs text-zinc-500 hidden lg:table-cell">{result.fastestLap}</td>
+                        <td className="px-4 py-3 text-right font-mono text-xs text-muted-foreground hidden lg:table-cell">{result.fastestLap}</td>
                         <td className="px-4 py-3 text-right">
-                          <span className="font-mono font-bold text-sm text-zinc-200">{result.points}</span>
+                          <span className="font-mono font-bold text-sm text-foreground/80">{result.points}</span>
                         </td>
                       </motion.tr>
                     ))}

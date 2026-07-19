@@ -24,31 +24,55 @@
 
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Outfit', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 
+  --color-background: #ffffff;
+  --color-foreground: #18181b;
+  --color-card: #ffffff;
+  --color-card-foreground: #18181b;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #18181b;
+  --color-primary: #e11d48;
+  --color-primary-foreground: #fff1f2;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #52525b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  --color-accent: #ff3b57;
+  --color-accent-foreground: #fff;
+  --color-border: #e4e4e7;
+  --color-input: #f4f4f5;
+  --color-ring: #e11d48;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+}
+
+/* ---- THEME TOKENS: LIGHT (default) ---- */
+:root {
+  color-scheme: light;
+}
+
+/* ---- THEME TOKENS: DARK ---- */
+.dark {
+  color-scheme: dark;
   --color-background: #09090b;
   --color-foreground: #fafafa;
   --color-card: #111113;
   --color-card-foreground: #f4f4f5;
   --color-popover: #18181b;
   --color-popover-foreground: #fafafa;
-  --color-primary: #e11d48;
-  --color-primary-foreground: #fff1f2;
   --color-secondary: #1c1c1f;
   --color-secondary-foreground: #a1a1aa;
   --color-muted: #18181b;
-  --color-muted-foreground: #71717a;
-  --color-accent: #ff3b57;
-  --color-accent-foreground: #fff;
+  --color-muted-foreground: #a1a1aa;
   --color-border: #27272a;
   --color-input: #1c1c1f;
-  --color-ring: #e11d48;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-info: #3b82f6;
 }
 
 *,
@@ -58,14 +82,13 @@
 }
 
 html {
-  color-scheme: dark;
   scrollbar-width: thin;
-  scrollbar-color: #3f3f46 transparent;
+  scrollbar-color: var(--color-muted-foreground) transparent;
 }
 
 body {
-  background-color: #09090b;
-  color: #fafafa;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   font-family: var(--font-sans);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -74,10 +97,10 @@ body {
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #52525b; }
+::-webkit-scrollbar-thumb { background: var(--color-muted-foreground); border-radius: 3px; opacity: 0.5; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-foreground); }
 
-::selection { background: rgba(225, 29, 72, 0.25); color: #fafafa; }
+::selection { background: rgba(225, 29, 72, 0.25); color: var(--color-foreground); }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
@@ -92,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-muted) 60%, transparent) 25%, var(--color-border) 50%, color-mix(in srgb, var(--color-muted) 60%, transparent) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
@@ -112,8 +135,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--color-foreground) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-foreground) 3%, transparent) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 

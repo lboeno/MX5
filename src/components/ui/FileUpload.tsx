@@ -115,7 +115,7 @@ export function FileUpload({
 
   return (
     <div className="w-full">
-      <label className="block text-[11px] font-medium text-zinc-400 mb-1.5 uppercase tracking-wide">
+      <label className="block text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">
         {label}
       </label>
       
@@ -134,7 +134,7 @@ export function FileUpload({
                 ? "border-rose-500 bg-rose-950/20"
                 : error
                 ? "border-red-800 bg-red-950/10"
-                : "border-zinc-700 hover:border-zinc-600 bg-zinc-900/30"
+                : "border-border hover:border-border bg-input/30"
             } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             <input
@@ -147,18 +147,18 @@ export function FileUpload({
             
             <div className="flex flex-col items-center gap-2">
               <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                isDragging ? "bg-rose-600" : "bg-zinc-800"
+                isDragging ? "bg-rose-600" : "bg-muted"
               }`}>
-                <Upload className={`w-6 h-6 ${isDragging ? "text-white" : "text-zinc-400"}`} />
+                <Upload                  className={`w-6 h-6 ${isDragging ? "text-white" : "text-muted-foreground"}`} />
               </div>
               
               <div>
-                <p className="text-sm font-medium text-zinc-300">
+                 <p className="text-sm font-medium text-foreground/80">
                   {isDragging ? "Solte o arquivo aqui" : "Arraste e solte ou clique para selecionar"}
                 </p>
-                <p className="text-xs text-zinc-500 mt-1">
-                  PDF, JPG, JPEG, PNG • Máx {maxSizeMB}MB
-                </p>
+                 <p className="text-xs text-muted-foreground mt-1">
+                   PDF, JPG, JPEG, PNG • Máx {maxSizeMB}MB
+                 </p>
               </div>
             </div>
           </motion.div>
@@ -168,10 +168,10 @@ export function FileUpload({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-zinc-900 border border-zinc-700 rounded-[8px] p-4"
+            className="bg-input border border-border rounded-[8px] p-4"
           >
             <div className="flex items-start gap-3">
-              <div className="w-12 h-12 rounded-[6px] bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+               <div className="w-12 h-12 rounded-[6px] bg-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
                 {preview ? (
                   <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                 ) : (
@@ -185,13 +185,13 @@ export function FileUpload({
                 
                 {uploadStatus === "uploading" && (
                   <div className="mt-2">
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                     <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-rose-600 transition-all duration-100"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
-                    <p className="text-[10px] text-zinc-500 mt-1">{uploadProgress}% concluído</p>
+                     <p className="text-[10px] text-muted-foreground mt-1">{uploadProgress}% concluído</p>
                   </div>
                 )}
                 
@@ -214,9 +214,9 @@ export function FileUpload({
                 <button
                   type="button"
                   onClick={handleRemove}
-                  className="p-1.5 hover:bg-zinc-800 rounded-[4px] transition-colors"
+                   className="p-1.5 hover:bg-muted rounded-[4px] transition-colors"
                 >
-                  <X className="w-4 h-4 text-zinc-500 hover:text-zinc-300" />
+                   <X className="w-4 h-4 text-muted-foreground hover:text-foreground/80" />
                 </button>
               )}
             </div>

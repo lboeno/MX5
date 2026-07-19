@@ -1,5 +1,5 @@
 import { supabase } from "../../lib/supabase";
-import type { EventSummary, EventDetail, ScheduleItem, Sponsor } from "../../types/events";
+import type { EventSummary, EventDetail, ScheduleItem, Sponsor, EventAttachment } from "../../types/events";
 
 function mapEvent(row: any, catNames: string[], registeredCount: number, champName?: string): EventSummary {
   return {
@@ -141,10 +141,11 @@ export async function getEventBySlug(slug: string): Promise<EventDetail | null> 
 
   const row = rows;
 
-  const [categories, schedule, sponsors, registered] = await Promise.all([
+  const [categories, schedule, sponsors, attachments, registered] = await Promise.all([
     getCategoriesForEvent(row.id),
     supabase.from("event_schedule").select("*").eq("event_id", row.id).order("day").order("start_time"),
     supabase.from("event_sponsors").select("*").eq("event_id", row.id),
+    supabase.from("event_attachments").select("*").eq("event_id", row.id).order("uploaded_at"),
     getRegisteredCount(row.id),
   ]);
 
@@ -162,6 +163,8 @@ export async function getEventBySlug(slug: string): Promise<EventDetail | null> 
       : undefined,
     city: row.city,
     state: row.state,
+    address: row.address ?? undefined,
+    organizer: row.organizer ?? undefined,
     coverImage: row.cover_image ?? undefined,
     bannerImage: row.banner_image ?? undefined,
     startDate: row.start_date,
@@ -187,6 +190,15 @@ export async function getEventBySlug(slug: string): Promise<EventDetail | null> 
       logo: s.logo ?? undefined,
       website: s.website ?? undefined,
       tier: s.tier ?? undefined,
+    })),
+    attachments: (attachments.data ?? []).map((a: any): EventAttachment => ({
+      id: a.id,
+      eventId: a.event_id,
+      name: a.name,
+      filePath: a.file_path ?? undefined,
+      mimeType: a.mime_type,
+      fileSize: a.file_size ?? undefined,
+      uploadedAt: a.uploaded_at,
     })),
     publicationStatus: row.publication_status,
     eventStatus: row.event_status,

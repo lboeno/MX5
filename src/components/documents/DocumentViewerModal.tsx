@@ -54,11 +54,11 @@ export function DocumentViewerModal({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="relative bg-zinc-900 border border-zinc-800 rounded-[10px] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="relative bg-card border border-border rounded-[10px] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl"
           >
-            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
-              <h2 className="font-display font-bold text-lg text-white">Documentos da Inscrição</h2>
-              <button onClick={onClose} className="text-zinc-500 hover:text-zinc-300 transition-colors">
+            <div className="flex items-center justify-between p-5 border-b border-border">
+              <h2 className="font-display font-bold text-lg text-foreground">Documentos da Inscrição</h2>
+              <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -69,7 +69,7 @@ export function DocumentViewerModal({
                   <Loader2 className="w-5 h-5 text-zinc-500 animate-spin" />
                 </div>
               ) : documents.length === 0 ? (
-                <div className="flex flex-col items-center gap-3 py-16 text-zinc-600">
+                <div className="flex flex-col items-center gap-3 py-16 text-muted-foreground/70">
                   <AlertCircle className="w-8 h-8" />
                   <p className="text-sm">Nenhum documento enviado nesta inscrição</p>
                 </div>
@@ -82,16 +82,16 @@ export function DocumentViewerModal({
                     return (
                       <div
                         key={doc.id}
-                        className="border border-zinc-800 rounded-[8px] overflow-hidden bg-zinc-950/50"
+                        className="border border-border rounded-[8px] overflow-hidden bg-muted/40"
                       >
-                        <div className="p-3 border-b border-zinc-800 flex items-center justify-between">
+                        <div className="p-3 border-b border-border flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             {isImage ? (
                               <Image className="w-4 h-4 text-rose-500" />
                             ) : (
                               <FileText className="w-4 h-4 text-rose-500" />
                             )}
-                            <span className="text-xs font-medium text-zinc-300">
+                            <span className="text-xs font-medium text-foreground/80">
                               {DOCUMENT_LABELS[doc.document_type] || doc.document_type}
                             </span>
                           </div>
@@ -109,7 +109,7 @@ export function DocumentViewerModal({
                               <img
                                 src={doc.signedUrl}
                                 alt={DOCUMENT_LABELS[doc.document_type]}
-                                className="w-full h-40 object-cover rounded-[4px] border border-zinc-800 hover:opacity-80 transition-opacity"
+                                className="w-full h-40 object-cover rounded-[4px] border border-border hover:opacity-80 transition-opacity"
                               />
                             </a>
                           ) : doc.signedUrl ? (
@@ -117,14 +117,14 @@ export function DocumentViewerModal({
                               href={doc.signedUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 p-3 rounded-[4px] bg-zinc-900 border border-zinc-700 hover:border-zinc-600 transition-colors"
+                              className="flex items-center gap-2 p-3 rounded-[4px] bg-input border border-zinc-700 hover:border-zinc-600 transition-colors"
                             >
                               <FileText className="w-5 h-5 text-zinc-400" />
-                              <span className="text-sm text-zinc-300 flex-1">Abrir Documento</span>
+                              <span className="text-sm text-foreground/80 flex-1">Abrir Documento</span>
                               <ExternalLink className="w-4 h-4 text-zinc-600" />
                             </a>
                           ) : (
-                            <div className="flex items-center gap-2 p-3 rounded-[4px] bg-zinc-900 border border-zinc-700">
+                            <div                               className="flex items-center gap-2 p-3 rounded-[4px] bg-input border border-zinc-700">
                               <AlertCircle className="w-4 h-4 text-zinc-600" />
                               <span className="text-xs text-zinc-500">URL indisponível</span>
                             </div>
@@ -165,9 +165,9 @@ export function DocumentViewerModal({
                 </div>
               )}
 
-              <div className="flex items-center justify-center gap-2 mt-4 p-3 rounded-[6px] bg-zinc-950 border border-zinc-800">
+              <div className="flex items-center justify-center gap-2 mt-4 p-3 rounded-[6px] bg-muted border border-border">
                 <Clock className="w-4 h-4 text-zinc-600" />
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-[11px] text-muted-foreground">
                   Os links expiram em 60 minutos por segurança
                 </p>
               </div>

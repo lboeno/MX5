@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense } from "react";
 
+import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { Navbar } from "./components/layout/Navbar";
@@ -32,7 +33,7 @@ import { ROUTES } from "./lib/routes";
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen bg-[#09090b]">
+    <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
@@ -68,9 +69,10 @@ function AdminPlaceholder({ title }: { title: string }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
+      <ThemeProvider>
+        <AuthProvider>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
             {/* Public routes */}
             <Route path={ROUTES.HOME} element={<PublicLayout><HomePage /></PublicLayout>} />
             <Route path="/eventos" element={<PublicLayout><EventsPage /></PublicLayout>} />
@@ -136,8 +138,9 @@ export default function App() {
 
             <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
           </Routes>
-        </Suspense>
-      </AuthProvider>
+          </Suspense>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
