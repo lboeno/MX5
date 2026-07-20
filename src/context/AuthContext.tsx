@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef } f
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import { getCurrentProfile, type Profile } from "../lib/auth";
+import { isAdminRole } from "../lib/roles";
 
 const PROFILE_RETRY_ATTEMPTS = 5;
 const PROFILE_RETRY_INTERVAL_MS = 500;
@@ -110,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const isAuthenticated = !!user;
-  const isAdmin = profile?.role === "admin";
+  const isAdmin = isAdminRole(profile?.role);
   const hasRole = (role: string) => profile?.role === role;
   const hasAnyRole = (roles: string[]) => !!profile && roles.includes(profile.role);
 

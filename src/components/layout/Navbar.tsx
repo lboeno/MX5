@@ -10,6 +10,7 @@ import { Button } from "../ui/Button";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { ROUTES } from "../../lib/routes";
+import { isAdminRole } from "../../lib/roles";
 
 const NAV_LINKS = [
   { label: "Eventos", href: "/eventos", icon: Flag },
@@ -30,7 +31,7 @@ export function Navbar() {
   const isActive = (href: string) => location.pathname.startsWith(href);
 
   const profileHref =
-    profile?.role === "admin" || profile?.role === "organizer"
+    isAdminRole(profile?.role) || profile?.role === "organizer"
       ? ROUTES.ADMIN
       : ROUTES.PILOT;
 

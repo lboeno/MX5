@@ -9,6 +9,7 @@ import { Select } from "../../components/ui/Select";
 import { Checkbox } from "../../components/ui/Checkbox";
 import { Card, CardHeader, CardTitle, CardDescription } from "../../components/ui/Card";
 import { useAuth } from "../../context/AuthContext";
+import { isAdminRole } from "../../lib/roles";
 import { updateProfile } from "../../lib/auth";
 import { uploadAvatar } from "../../lib/storage";
 import {
@@ -258,7 +259,7 @@ export function AdminConfiguracoes() {
               <input ref={profileFileRef} type="file" accept="image/*" className="hidden" onChange={handleProfilePhoto} />
             </div>
             <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-foreground/80 border border-border">
-              {profile?.role === "admin" ? "Administrador" : profile?.role ?? "—"}
+              {profile?.role === "superadmin" ? "Super Admin" : profile?.role === "admin" ? "Administrador" : profile?.role ?? "—"}
             </span>
           </div>
           <div className="flex-1 grid sm:grid-cols-2 gap-4">

@@ -10,9 +10,11 @@ import { getAllUsersWithPermissions, updateUserRole, deleteUser } from "../../se
 import { UserPermissionsModal } from "./UserPermissionsModal";
 import { GroupPermissionsModal } from "./GroupPermissionsModal";
 import type { ProfileWithPermissions } from "../../types/permissions";
+import { isAdminRole } from "../../lib/roles";
 
 const ROLE_OPTIONS = [
   { value: "all", label: "Todos os papéis" },
+  { value: "superadmin", label: "Super Admin" },
   { value: "admin", label: "Admin" },
   { value: "organizer", label: "Organizador" },
   { value: "pilot", label: "Piloto" },
@@ -20,13 +22,14 @@ const ROLE_OPTIONS = [
 ];
 
 const ROLE_BADGE: Record<string, { label: string; variant: "default" | "success" | "warning" | "danger" | "info" | "outline" | "ghost" }> = {
+  superadmin: { label: "Super Admin", variant: "danger" },
   admin: { label: "Admin", variant: "danger" },
   organizer: { label: "Organizador", variant: "warning" },
   pilot: { label: "Piloto", variant: "info" },
   team: { label: "Equipe", variant: "success" },
 };
 
-const ROLES = ["admin", "organizer", "pilot", "team"] as const;
+const ROLES = ["superadmin", "admin", "organizer", "pilot", "team"] as const;
 
 export function AdminUsers() {
   const [search, setSearch] = useState("");
@@ -263,7 +266,7 @@ export function AdminUsers() {
                               {user.overrideCount}ovr
                             </Badge>
                           )}
-                          {user.role !== "admin" && (
+                          {!isAdminRole(user.role) && (
                             <Button
                               variant="ghost"
                               size="sm"
