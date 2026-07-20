@@ -231,7 +231,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
           className={`flex items-center gap-2.5 px-2 py-2 rounded-[5px] w-full text-left hover:bg-muted/50 transition-colors ${collapsed ? "justify-center" : ""}`}
         >
           <img
-            src={profile?.photo_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&auto=format"}
+            src={profile?.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || "U")}&background=292524&color=fafafa&size=64`}
             alt="Perfil"
             className="w-7 h-7 rounded-full border border-border flex-shrink-0"
           />

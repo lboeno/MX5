@@ -28,7 +28,7 @@ const LEVEL_DOT: Record<AppNotification["level"], string> = {
 
 export function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
 
   const [notifOpen, setNotifOpen] = useState(false);
@@ -266,13 +266,13 @@ export function AdminLayout() {
             <div className="h-5 w-px bg-border mx-1" />
             <div className="flex items-center gap-2">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&auto=format"
-                alt="Admin"
-                className="w-7 h-7 rounded-full border border-border"
+                src={profile?.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || "U")}&background=292524&color=fafafa&size=64`}
+                alt={profile?.name ?? "Usuário"}
+                className="w-7 h-7 rounded-full border border-border object-cover"
               />
               <div className="hidden sm:block">
-                <p className="text-xs font-medium text-foreground/80">Admin</p>
-                <p className="text-[10px] text-muted-foreground/70 font-mono">admin@portalmx.com.br</p>
+                <p className="text-xs font-medium text-foreground/80">{profile?.name || "Usuário"}</p>
+                <p className="text-[10px] text-muted-foreground/70 font-mono">{profile?.email || user?.email || ""}</p>
               </div>
             </div>
             <Link to="/">
