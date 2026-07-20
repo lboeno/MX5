@@ -180,8 +180,8 @@ export function AdminPilots() {
     <div className="p-6 space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl text-white">Pilotos</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">{pilots.length} pilotos cadastrados</p>
+          <h1 className="font-display font-bold text-2xl text-foreground">Pilotos</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">{pilots.length} pilotos cadastrados</p>
         </div>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" icon={<Download className="w-4 h-4" />}>Exportar</Button>
@@ -192,12 +192,12 @@ export function AdminPilots() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nome, número ou equipe..."
-            className="w-full h-9 pl-9 pr-3 bg-zinc-900 border border-zinc-800 rounded-[5px] text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-rose-800 transition-colors"
+            className="w-full h-9 pl-9 pr-3 bg-card border border-border rounded-[5px] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-rose-800 transition-colors"
           />
         </div>
         <div className="flex gap-2 overflow-x-auto">
@@ -205,10 +205,10 @@ export function AdminPilots() {
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat as Category | "all")}
-              className={`flex-shrink-0 px-3 h-9 text-xs rounded-[5px] border transition-colors ${
+                  className={`flex-shrink-0 px-3 h-9 text-xs rounded-[5px] border transition-colors ${
                 categoryFilter === cat
                   ? "bg-rose-950 text-rose-400 border-rose-900"
-                  : "text-zinc-500 border-zinc-800 hover:border-zinc-600 hover:text-zinc-300"
+                  : "text-muted-foreground border-border hover:border-zinc-600 hover:text-foreground"
               }`}
             >
               {cat === "all" ? "Todos" : cat}
@@ -222,16 +222,16 @@ export function AdminPilots() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-zinc-800">
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider">#</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider">Piloto</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden md:table-cell">Categoria</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden lg:table-cell">Equipe</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden lg:table-cell">Moto</th>
-                <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden sm:table-cell">Pts</th>
-                <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden sm:table-cell">V/P</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden sm:table-cell">Docs</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider">Status</th>
+               <tr className="border-b border-border">
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider">#</th>
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider">Piloto</th>
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden md:table-cell">Categoria</th>
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden lg:table-cell">Equipe</th>
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden lg:table-cell">Moto</th>
+                 <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden sm:table-cell">Pts</th>
+                 <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden sm:table-cell">V/P</th>
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden sm:table-cell">Docs</th>
+                 <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider">Status</th>
                 <th className="w-10" />
               </tr>
             </thead>
@@ -239,7 +239,7 @@ export function AdminPilots() {
               {loading ? (
                 <tr>
                   <td colSpan={9} className="text-center py-16">
-                    <Loader2 className="w-5 h-5 text-zinc-500 animate-spin mx-auto" />
+                    <Loader2 className="w-5 h-5 text-muted-foreground animate-spin mx-auto" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
@@ -247,7 +247,7 @@ export function AdminPilots() {
                   <td colSpan={9}>
                     <div className="text-center py-16">
                       <Users className="w-8 h-8 text-zinc-700 mx-auto mb-2" />
-                      <p className="text-zinc-500 text-sm">Nenhum piloto encontrado</p>
+                      <p className="text-muted-foreground text-sm">Nenhum piloto encontrado</p>
                     </div>
                   </td>
                 </tr>
@@ -258,7 +258,7 @@ export function AdminPilots() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.04 }}
-                    className="border-b border-zinc-800/60 last:border-0 hover:bg-zinc-900/30 transition-colors"
+                    className="border-b border-border/60 last:border-0 hover:bg-card/30 transition-colors"
                   >
                     <td className="px-4 py-3">
                       <span className="font-mono font-bold text-base text-rose-400">{pilot.number}</span>
@@ -268,11 +268,11 @@ export function AdminPilots() {
                         <img
                           src={pilot.photo || "https://ui-avatars.com/api/?name=" + encodeURIComponent(pilot.name) + "&background=292524&color=fafafa&size=32"}
                           alt={pilot.name}
-                          className="w-8 h-8 rounded-full object-cover border border-zinc-700 flex-shrink-0"
+                          className="w-8 h-8 rounded-full object-cover border border-border flex-shrink-0"
                         />
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-zinc-200 truncate">{pilot.name}</p>
-                          {pilot.nickname && <p className="text-[11px] text-zinc-600 truncate">"{pilot.nickname}"</p>}
+                          <p className="text-sm font-medium text-foreground truncate">{pilot.name}</p>
+                          {pilot.nickname && <p className="text-[11px] text-muted-foreground/70 truncate">"{pilot.nickname}"</p>}
                         </div>
                       </div>
                     </td>
@@ -280,23 +280,23 @@ export function AdminPilots() {
                       <Badge variant="outline">{pilot.category}</Badge>
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
-                      <p className="text-xs text-zinc-400 truncate max-w-[140px]">{pilot.team ?? "Independente"}</p>
+                      <p className="text-xs text-muted-foreground truncate max-w-[140px]">{pilot.team ?? "Independente"}</p>
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
-                      <p className="text-xs text-zinc-400">{pilot.motorcycle.brand} {pilot.motorcycle.model}</p>
-                      <p className="text-[10px] text-zinc-600 font-mono">{pilot.motorcycle.year}</p>
+                      <p className="text-xs text-muted-foreground">{pilot.motorcycle.brand} {pilot.motorcycle.model}</p>
+                      <p className="text-[10px] text-muted-foreground/70 font-mono">{pilot.motorcycle.year}</p>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell text-right">
-                      <p className="font-mono font-bold text-sm text-zinc-200">{pilot.points}</p>
+                      <p className="font-mono font-bold text-sm text-foreground">{pilot.points}</p>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell text-right">
-                      <p className="font-mono text-xs text-zinc-400">{pilot.wins}V / {pilot.podiums}P</p>
+                      <p className="font-mono text-xs text-muted-foreground">{pilot.wins}V / {pilot.podiums}P</p>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
                       <button
                         onClick={() => openDocumentViewer(pilot.id)}
                         disabled={docViewerLoading}
-                        className="flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-[11px] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-50"
                       >
                         {docViewerLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
                         Ver
@@ -311,16 +311,16 @@ export function AdminPilots() {
                       <div className="relative">
                         <button
                           onClick={() => setOpenMenuId(openMenuId === pilot.id ? null : pilot.id)}
-                          className="w-7 h-7 flex items-center justify-center rounded-[4px] text-zinc-600 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+                          className="w-7 h-7 flex items-center justify-center rounded-[4px] text-muted-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
                         >
                           <MoreHorizontal className="w-4 h-4" />
                         </button>
                         {openMenuId === pilot.id && (
                           <>
                             <div className="fixed inset-0 z-10" onClick={() => setOpenMenuId(null)} />
-                            <div className="absolute right-0 top-8 w-44 bg-zinc-900 border border-zinc-700 rounded-[6px] shadow-xl z-20 py-1">
-                              <button onClick={() => { setOpenMenuId(null); openEdit(pilot); }}
-                                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors">
+                             <div className="absolute right-0 top-8 w-44 bg-card border border-border rounded-[6px] shadow-xl z-20 py-1">
+                               <button onClick={() => { setOpenMenuId(null); openEdit(pilot); }}
+                                 className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                                 <Edit2 className="w-3.5 h-3.5" />
                                 Editar
                               </button>
@@ -346,10 +346,10 @@ export function AdminPilots() {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowModal(false)} />
-          <div className="relative bg-zinc-900 border border-zinc-800 rounded-[10px] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
-              <h2 className="font-display font-bold text-lg text-white">{editPilot ? "Editar Piloto" : "Cadastrar Piloto"}</h2>
-              <button onClick={() => setShowModal(false)} className="text-zinc-500 hover:text-zinc-300 transition-colors">
+          <div className="relative bg-card border border-border rounded-[10px] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between p-5 border-b border-border">
+              <h2 className="font-display font-bold text-lg text-foreground">{editPilot ? "Editar Piloto" : "Cadastrar Piloto"}</h2>
+              <button onClick={() => setShowModal(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -361,9 +361,9 @@ export function AdminPilots() {
                 <Input label="Apelido" value={formNickname} onChange={(e) => setFormNickname(e.target.value)} placeholder="Opcional" />
                 <Input label="Número da Moto" value={formNumber} onChange={(e) => setFormNumber(e.target.value)} />
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1.5 uppercase tracking-wider">Categoria</label>
+                  <label className="block text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider">Categoria</label>
                   <select value={formCategory} onChange={(e) => setFormCategory(e.target.value)}
-                    className="w-full h-9 px-3 bg-zinc-950 border border-zinc-800 rounded-[5px] text-sm text-zinc-200 focus:outline-none focus:border-rose-800 transition-colors">
+                    className="w-full h-9 px-3 bg-input border border-border rounded-[5px] text-sm text-foreground focus:outline-none focus:border-rose-800 transition-colors">
                     <option value="">Selecione</option>
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -371,9 +371,9 @@ export function AdminPilots() {
                 <Input label="Equipe" value={formTeam} onChange={(e) => setFormTeam(e.target.value)} placeholder="Opcional" />
                 <Input label="Nacionalidade" value={formNationality} onChange={(e) => setFormNationality(e.target.value)} />
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1.5 uppercase tracking-wider">Status</label>
+                  <label className="block text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider">Status</label>
                   <select value={formStatus} onChange={(e) => setFormStatus(e.target.value)}
-                    className="w-full h-9 px-3 bg-zinc-950 border border-zinc-800 rounded-[5px] text-sm text-zinc-200 focus:outline-none focus:border-rose-800 transition-colors">
+                    className="w-full h-9 px-3 bg-input border border-border rounded-[5px] text-sm text-foreground focus:outline-none focus:border-rose-800 transition-colors">
                     <option value="active">Ativo</option>
                     <option value="inactive">Inativo</option>
                     <option value="suspended">Suspenso</option>
@@ -382,7 +382,7 @@ export function AdminPilots() {
               </div>
 
               <div className="border-t border-zinc-800 pt-5">
-                <h3 className="font-display font-semibold text-sm text-zinc-200 mb-4">Motocicleta</h3>
+                <h3 className="font-display font-semibold text-sm text-foreground mb-4">Motocicleta</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input label="Marca" value={formMotoBrand} onChange={(e) => setFormMotoBrand(e.target.value)} placeholder="Ex: KTM" />
                   <Input label="Modelo" value={formMotoModel} onChange={(e) => setFormMotoModel(e.target.value)} placeholder="Ex: SX-F 450" />
@@ -393,7 +393,7 @@ export function AdminPilots() {
               </div>
 
               <div className="border-t border-zinc-800 pt-5">
-                <h3 className="font-display font-semibold text-sm text-zinc-200 mb-4">Estatísticas</h3>
+                <h3 className="font-display font-semibold text-sm text-foreground mb-4">Estatísticas</h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <Input label="Pontos" value={formPoints} onChange={(e) => setFormPoints(e.target.value)} type="number" />
                   <Input label="Vitórias" value={formWins} onChange={(e) => setFormWins(e.target.value)} type="number" />
@@ -423,12 +423,12 @@ export function AdminPilots() {
       {deleteId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setDeleteId(null)} />
-          <div className="relative bg-zinc-900 border border-zinc-800 rounded-[10px] w-full max-w-sm p-6 shadow-2xl text-center">
+            <div className="relative bg-card border border-border rounded-[10px] w-full max-w-sm p-6 shadow-2xl text-center">
             <div className="w-12 h-12 rounded-full bg-rose-900/30 border border-rose-800 flex items-center justify-center mx-auto mb-4">
               <Trash2 className="w-6 h-6 text-rose-500" />
             </div>
-            <h2 className="font-display font-bold text-lg text-white mb-2">Excluir Piloto</h2>
-            <p className="text-sm text-zinc-400 mb-6">Tem certeza que deseja excluir este piloto? Esta ação não pode ser desfeita.</p>
+            <h2 className="font-display font-bold text-lg text-foreground mb-2">Excluir Piloto</h2>
+            <p className="text-sm text-muted-foreground mb-6">Tem certeza que deseja excluir este piloto? Esta ação não pode ser desfeita.</p>
             <div className="flex gap-3 justify-center">
               <Button variant="ghost" size="md" onClick={() => setDeleteId(null)}>Cancelar</Button>
               <Button variant="primary" size="md" loading={deleteLoading} onClick={handleDelete} className="bg-rose-600 hover:bg-rose-700">

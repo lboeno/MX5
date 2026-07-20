@@ -8,6 +8,7 @@ import { Card } from "../../components/ui/Card";
 import { fetchAllEvents } from "../../services/events";
 import { format } from "date-fns";
 import type { EventSummary } from "../../types/events";
+import { isEnrollmentOpen } from "../../types/events";
 import { useAuth } from "../../context/AuthContext";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -196,9 +197,19 @@ export function EventsPage() {
                             R$ {event.entryFee.toLocaleString("pt-BR")}
                           </p>
                         </div>
-                        <Button variant={event.eventStatus === "registration_open" ? "primary" : "outline"} size="sm">
-                          {event.eventStatus === "registration_open" ? "Inscrever-se" : event.eventStatus === "finished" ? "Resultados" : "Detalhes"}
-                        </Button>
+                        {isEnrollmentOpen(event.eventStatus) ? (
+                          <Link
+                            to={`/eventos/${event.slug}/inscrever`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center justify-center font-medium border rounded-[5px] bg-rose-600 hover:bg-rose-500 text-white border-rose-600 hover:border-rose-500 shadow-[0_0_16px_rgba(225,29,72,0.25)] hover:shadow-[0_0_24px_rgba(225,29,72,0.4)] h-9 px-4 text-sm transition-all"
+                          >
+                            Inscrever-se
+                          </Link>
+                        ) : (
+                          <Button variant="outline" size="sm">
+                            {event.eventStatus === "finished" ? "Resultados" : "Detalhes"}
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </Link>

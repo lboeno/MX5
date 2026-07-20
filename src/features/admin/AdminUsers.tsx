@@ -105,8 +105,8 @@ export function AdminUsers() {
     <div className="p-6 space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl text-white">Usuários & Permissões</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">
+          <h1 className="font-display font-bold text-2xl text-foreground">Usuários & Permissões</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             {users.length} {users.length === 1 ? "usuário cadastrado" : "usuários cadastrados"}
           </p>
         </div>
@@ -149,33 +149,33 @@ export function AdminUsers() {
       <Card padding="none">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-6 h-6 text-zinc-500 animate-spin" />
+            <Loader2 className="w-6 h-6 text-muted-foreground animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <Users className="w-10 h-10 text-zinc-700 mb-3" />
-            <p className="text-zinc-500 text-sm">Nenhum usuário encontrado</p>
+            <p className="text-muted-foreground text-sm">Nenhum usuário encontrado</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-800/60">
-                  <th className="text-left text-[11px] font-semibold text-zinc-500 uppercase tracking-wider px-5 py-3">
-                    Usuário
-                  </th>
-                  <th className="text-left text-[11px] font-semibold text-zinc-500 uppercase tracking-wider px-5 py-3 hidden sm:table-cell">
-                    Email
-                  </th>
-                  <th className="text-left text-[11px] font-semibold text-zinc-500 uppercase tracking-wider px-5 py-3">
-                    Papel
-                  </th>
-                  <th className="text-center text-[11px] font-semibold text-zinc-500 uppercase tracking-wider px-5 py-3 hidden md:table-cell">
-                    Telas Liberadas
-                  </th>
-                  <th className="text-right text-[11px] font-semibold text-zinc-500 uppercase tracking-wider px-5 py-3">
-                    Ações
-                  </th>
+               <tr className="border-b border-border/60">
+                 <th className="text-left text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3">
+                   Usuário
+                 </th>
+                 <th className="text-left text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3 hidden sm:table-cell">
+                   Email
+                 </th>
+                 <th className="text-left text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3">
+                   Papel
+                 </th>
+                 <th className="text-center text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3 hidden md:table-cell">
+                   Telas Liberadas
+                 </th>
+                 <th className="text-right text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3">
+                   Ações
+                 </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/40">
@@ -191,26 +191,26 @@ export function AdminUsers() {
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.02 }}
-                      className="group hover:bg-zinc-900/40 transition-colors"
+                      className="group hover:bg-card/40 transition-colors"
                     >
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center flex-shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-muted border border-border flex items-center justify-center flex-shrink-0">
                             {user.photo_url ? (
                               <img src={user.photo_url} alt="" className="w-full h-full rounded-full object-cover" />
                             ) : (
-                              <span className="text-xs font-bold text-zinc-500">
+                              <span className="text-xs font-bold text-muted-foreground">
                                 {user.name.charAt(0).toUpperCase()}
                               </span>
                             )}
                           </div>
-                          <span className="text-sm font-medium text-zinc-200 truncate max-w-[180px]">
+                          <span className="text-sm font-medium text-foreground truncate max-w-[180px]">
                             {user.name}
                           </span>
                         </div>
                       </td>
                       <td className="px-5 py-3.5 hidden sm:table-cell">
-                        <span className="text-sm text-zinc-400">{user.email}</span>
+                        <span className="text-sm text-muted-foreground">{user.email}</span>
                       </td>
                       <td className="px-5 py-3.5">
                         {editingRoleId === user.id ? (
@@ -220,7 +220,7 @@ export function AdminUsers() {
                             disabled={busyId === user.id}
                             onChange={(e) => handleChangeRole(user, e.target.value)}
                             onBlur={() => setEditingRoleId(null)}
-                            className="h-8 px-2 bg-zinc-950 border border-rose-800 rounded-[5px] text-xs text-zinc-200 focus:outline-none"
+                            className="h-8 px-2 bg-input border border-rose-800 rounded-[5px] text-xs text-foreground focus:outline-none"
                           >
                             {ROLES.map((r) => (
                               <option key={r} value={r}>
@@ -249,7 +249,7 @@ export function AdminUsers() {
                               </Badge>
                             ))
                           ) : (
-                            <span className="text-xs text-zinc-600">—</span>
+                            <span className="text-xs text-muted-foreground/70">—</span>
                           )}
                           {allowedScreens.length > 4 && (
                             <Badge variant="ghost" size="sm">+{allowedScreens.length - 4}</Badge>

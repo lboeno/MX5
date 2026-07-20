@@ -233,6 +233,7 @@ export interface NewsArticle {
   category: "race_report" | "news" | "interview" | "preview" | "analysis";
   views: number;
   featured: boolean;
+  status?: "draft" | "published";
 }
 
 export interface GalleryPhoto {

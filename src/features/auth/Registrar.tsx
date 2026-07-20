@@ -19,7 +19,6 @@ import {
   Shield,
   Activity,
   Video,
-  CreditCard,
 } from "lucide-react";
 
 import { Stepper } from "../../components/ui/Stepper";
@@ -44,6 +43,8 @@ export type { CategoryInfo } from "../../types";
 import { Step1PersonalData, Step2Emergency, Step3Competition, Step4Documents, Step5Medical, Step6Extras, Step7Accepts } from "./RegistrarSteps";
 import { signUp, login } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
+import { ROUTES } from "../../lib/routes";
+import { useAuth } from "../../context/AuthContext";
 import { getCategoryId } from "../../lib/categories";
 import { fetchMyPilot } from "../../lib/pilots";
 import { uploadFile, saveDocuments, deleteFile } from "../../lib/storage";
@@ -125,9 +126,11 @@ const STORAGE_KEY = "pilot_registration_draft";
 
 export function Registrar() {
   const navigate = useNavigate();
+  const { profile } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationNumber, setRegistrationNumber] = useState<string | null>(null);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [cepLoading, setCepLoading] = useState(false);
   const [showDraftLoaded, setShowDraftLoaded] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -426,6 +429,7 @@ export function Registrar() {
       if (regError) throw regError;
 
       const registrationId = regData.id;
+      setRegistrationId(registrationId);
       if (DEBUG) console.log(`[${traceId}] ✓ Registration criada`, registrationId);
 
       // 4. Upload documents to Storage
@@ -510,56 +514,35 @@ export function Registrar() {
               <CheckCircle className="w-10 h-10 text-green-500" />
             </div>
 
-            <h1 className="font-display font-bold text-2xl text-white mb-2">Inscrição Realizada!</h1>
-            <p className="text-zinc-400 text-sm mb-6">Sua inscrição foi enviada com sucesso.</p>
+            <h1 className="font-display font-bold text-2xl text-white mb-2">Cadastro realizado</h1>
+            <p className="text-zinc-400 text-sm mb-6">Seu cadastro foi realizado com sucesso.</p>
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-[8px] p-4 mb-6">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wide mb-1">Número da Inscrição</p>
-              <p className="font-display font-bold text-2xl text-rose-500">{registrationNumber}</p>
-            </div>
-
-            <div className="text-left bg-zinc-900/50 rounded-[8px] p-4 mb-6">
-              <p className="text-xs font-medium text-zinc-300 mb-3">Próximos Passos:</p>
-              <ol className="space-y-2 text-xs text-zinc-400">
-                <li className="flex items-start gap-2">
-                  <span className="text-rose-500 font-bold">1.</span>
-                  <span>Análise dos documentos enviados (até 48h)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-rose-500 font-bold">2.</span>
-                  <span>Confirmação de pagamento via e-mail</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-rose-500 font-bold">3.</span>
-                  <span>Homologação pela organização do evento</span>
-                </li>
-              </ol>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col gap-3">
               <Button
                 variant="primary"
                 size="lg"
                 fullWidth
-                onClick={() => navigate("/pagamento")}
-                icon={<CreditCard className="w-4 h-4" />}
+                onClick={() => navigate("/eventos")}
               >
-                Pagar agora
+                Ir para eventos
               </Button>
-
               <Button
                 variant="outline"
-                size="lg"
+                size="md"
                 fullWidth
-                onClick={() => navigate("/login")}
+                onClick={() => navigate(profile?.role === "admin" || profile?.role === "organizer" ? ROUTES.ADMIN : ROUTES.PILOT)}
               >
-                Pagar depois
+                Ir para perfil
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                fullWidth
+                onClick={() => navigate("/")}
+              >
+                Ir para home
               </Button>
             </div>
-
-            <p className="text-[11px] text-zinc-600 mt-4">
-              Enviamos uma confirmação para seu e-mail.
-            </p>
           </Card>
         </motion.div>
       </div>

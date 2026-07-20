@@ -28,7 +28,8 @@ async function generateSlug(title: string): Promise<string> {
 
 export async function createEvent(
   data: EventFormData,
-  userId: string
+  userId: string,
+  processedImages?: { coverUrl?: string; bannerUrl?: string; galleryUrls?: string[] }
 ): Promise<EventDetail> {
   const slug = await generateSlug(data.title);
 
@@ -43,6 +44,10 @@ export async function createEvent(
       track_id: data.trackId ?? null,
       city: data.city,
       state: data.state,
+      address: data.address ?? null,
+      organizer: data.organizer ?? null,
+      cover_image: processedImages?.coverUrl ?? null,
+      banner_image: processedImages?.bannerUrl ?? null,
       start_date: data.startDate,
       end_date: data.endDate,
       registration_open: data.registrationOpen ?? null,

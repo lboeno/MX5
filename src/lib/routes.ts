@@ -11,5 +11,8 @@ export const ROUTES = {
   ADMIN_LOGS: "/admin/logs",
   PILOTS: "/pilotos",
   PILOT: "/piloto",
+  PILOT_REGISTRATION: "/piloto/inscricao/:id",
   TEAM: "/equipe",
+  ENROLL_EVENT: "/eventos/:slug/inscrever",
+  ADMIN_REGISTRATIONS: "/admin/inscricoes",
 } as const;

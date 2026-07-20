@@ -153,12 +153,12 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
 
   return (
     <aside
-      className={`fixed left-0 top-0 bottom-0 z-40 flex flex-col border-r border-zinc-800 bg-[#0d0d0f] transition-all duration-200 ${
+      className={`fixed left-0 top-0 bottom-0 z-40 flex flex-col border-r border-border bg-background transition-all duration-200 ${
         collapsed ? "w-14" : "w-56"
       }`}
     >
       {/* Logo */}
-      <div className={`h-14 flex items-center border-b border-zinc-800 flex-shrink-0 ${collapsed ? "justify-center px-0" : "px-4"}`}>
+        <div className={`h-14 flex items-center border-b border-border flex-shrink-0 ${collapsed ? "justify-center px-0" : "px-4"}`}>
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-7 h-7 bg-rose-600 rounded-[4px] flex items-center justify-center shadow-[0_0_12px_rgba(225,29,72,0.35)] flex-shrink-0">
             <MapPin className="w-4 h-4 text-white" />
@@ -183,7 +183,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
           return (
             <div key={group.label} className="mb-4">
               {!collapsed && (
-                <p className="text-[10px] font-semibold text-zinc-600 uppercase tracking-widest px-2 mb-1">
+                <p className="text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest px-2 mb-1">
                   {group.label}
                 </p>
               )}
@@ -199,7 +199,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
                         className={`flex items-center gap-2.5 px-2 py-1.5 rounded-[5px] text-sm transition-all duration-100 group relative ${
                           active
                             ? "bg-rose-950/60 text-rose-400 border border-rose-900/50"
-                            : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 border border-transparent"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted/60 border border-transparent"
                         } ${collapsed ? "justify-center" : ""}`}
                       >
                         <Icon className={`w-4 h-4 flex-shrink-0 ${active ? "text-rose-400" : ""}`} />
@@ -225,26 +225,26 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
       </nav>
 
       {/* Bottom */}
-      <div className="border-t border-zinc-800 p-2 flex-shrink-0">
+      <div className="border-t border-border p-2 flex-shrink-0">
         <button
           onClick={() => setShowProfile(true)}
-          className={`flex items-center gap-2.5 px-2 py-2 rounded-[5px] w-full text-left hover:bg-zinc-800/50 transition-colors ${collapsed ? "justify-center" : ""}`}
+          className={`flex items-center gap-2.5 px-2 py-2 rounded-[5px] w-full text-left hover:bg-muted/50 transition-colors ${collapsed ? "justify-center" : ""}`}
         >
           <img
-            src={profile?.photo_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&auto=format"}
+            src={profile?.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || "U")}&background=292524&color=fafafa&size=64`}
             alt="Perfil"
-            className="w-7 h-7 rounded-full border border-zinc-700 flex-shrink-0"
+            className="w-7 h-7 rounded-full border border-border flex-shrink-0"
           />
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-zinc-300 truncate">{profile?.name || "Portal Admin"}</p>
-              <p className="text-[10px] text-zinc-600 truncate font-mono">{profile?.email || "—"}</p>
+              <p className="text-xs font-medium text-foreground/80 truncate">{profile?.name || "Portal Admin"}</p>
+              <p className="text-[10px] text-muted-foreground/70 truncate font-mono">{profile?.email || "—"}</p>
             </div>
           )}
         </button>
         <button
           onClick={onToggle}
-          className="w-full mt-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-[4px] text-xs text-zinc-600 hover:text-zinc-400 hover:bg-zinc-800/50 transition-colors"
+          className="w-full mt-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-[4px] text-xs text-muted-foreground/70 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
         >
           {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
           {!collapsed && <span>Recolher</span>}

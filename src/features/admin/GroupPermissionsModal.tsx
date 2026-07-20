@@ -76,17 +76,17 @@ export function GroupPermissionsModal({ onClose, onSaved }: GroupPermissionsModa
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-[#111113] border border-zinc-800 rounded-[12px] w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl"
+        className="bg-card border border-border rounded-[12px] w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800 flex-shrink-0">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border flex-shrink-0">
           <div>
-            <h2 className="font-display font-semibold text-[15px] text-white">Acesso por Grupo</h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <h2 className="font-display font-semibold text-[15px] text-foreground">Acesso por Grupo</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
               Permissões padrão aplicadas a todos os usuários de um papel
             </p>
           </div>
-          <button onClick={onClose} className="p-1 rounded-md hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors">
+          <button onClick={onClose} className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -111,23 +111,23 @@ export function GroupPermissionsModal({ onClose, onSaved }: GroupPermissionsModa
         {/* Body */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-6 h-6 text-zinc-500 animate-spin" />
+            <Loader2 className="w-6 h-6 text-muted-foreground animate-spin" />
           </div>
         ) : (
           <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
             {SCREEN_GROUPS.map((group) => (
               <div key={group.label}>
-                <p className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2">
+                <p className="text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-wider mb-2">
                   {group.label}
                 </p>
                 <div className="space-y-1">
                   {group.screens.map((screen) => (
                     <div
                       key={screen}
-                      className="flex items-center justify-between px-3 py-2 rounded-[6px] hover:bg-zinc-900/60 transition-colors cursor-pointer"
+                      className="flex items-center justify-between px-3 py-2 rounded-[6px] hover:bg-card/60 transition-colors cursor-pointer"
                       onClick={() => toggle(screen)}
                     >
-                      <span className="text-sm text-zinc-300">{SCREEN_LABELS[screen]}</span>
+                      <span className="text-sm text-foreground/80">{SCREEN_LABELS[screen]}</span>
                       <div className={`w-9 h-5 rounded-full transition-colors duration-150 flex items-center ${
                         current[screen] ? "bg-rose-600 justify-end" : "bg-zinc-700 justify-start"
                       }`}>
@@ -142,8 +142,8 @@ export function GroupPermissionsModal({ onClose, onSaved }: GroupPermissionsModa
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between px-5 py-4 border-t border-zinc-800 flex-shrink-0">
-          <span className="text-xs text-zinc-600">{enabledCount}/{ALL_SCREENS.length} telas liberadas</span>
+        <div className="flex items-center justify-between px-5 py-4 border-t border-border flex-shrink-0">
+          <span className="text-xs text-muted-foreground/70">{enabledCount}/{ALL_SCREENS.length} telas liberadas</span>
           <div className="flex items-center gap-2">
             <div className="flex gap-1">
               <Button variant="ghost" size="sm" onClick={() => setAll(true)}>Tudo</Button>

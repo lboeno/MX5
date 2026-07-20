@@ -4,7 +4,8 @@ import { getEventBySlug } from "./fetch";
 
 export async function updateEvent(
   id: string,
-  data: Partial<EventFormData>
+  data: Partial<EventFormData>,
+  processedImages?: { coverUrl?: string; bannerUrl?: string; galleryUrls?: string[] }
 ): Promise<EventDetail> {
   const updateData: Record<string, unknown> = {};
 
@@ -15,6 +16,8 @@ export async function updateEvent(
   if (data.trackId !== undefined) updateData.track_id = data.trackId ?? null;
   if (data.city !== undefined) updateData.city = data.city;
   if (data.state !== undefined) updateData.state = data.state;
+  if (data.address !== undefined) updateData.address = data.address ?? null;
+  if (data.organizer !== undefined) updateData.organizer = data.organizer ?? null;
   if (data.startDate !== undefined) updateData.start_date = data.startDate;
   if (data.endDate !== undefined) updateData.end_date = data.endDate;
   if (data.registrationOpen !== undefined) updateData.registration_open = data.registrationOpen ?? null;
@@ -23,6 +26,8 @@ export async function updateEvent(
   if (data.maxPilots !== undefined) updateData.max_pilots = data.maxPilots;
   if (data.eventStatus !== undefined) updateData.event_status = data.eventStatus;
   if (data.isFeatured !== undefined) updateData.is_featured = data.isFeatured;
+  if (processedImages?.coverUrl) updateData.cover_image = processedImages.coverUrl;
+  if (processedImages?.bannerUrl) updateData.banner_image = processedImages.bannerUrl;
 
   updateData.updated_at = new Date().toISOString();
 
@@ -84,6 +89,23 @@ export async function updateEvent(
           logo: s.logo ?? null,
           website: s.website ?? null,
           tier: s.tier ?? null,
+        }))
+      );
+    }
+  }
+
+  // Update attachments: delete all, re-insert
+  if (data.attachments !== undefined) {
+    await supabase.from("event_attachments").delete().eq("event_id", id);
+
+    if (data.attachments.length > 0) {
+      await supabase.from("event_attachments").insert(
+        data.attachments.map((a) => ({
+          event_id: id,
+          name: a.name,
+          file_path: a.filePath ?? null,
+          mime_type: a.mimeType,
+          file_size: a.fileSize ?? null,
         }))
       );
     }

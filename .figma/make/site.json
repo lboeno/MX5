@@ -1,4 +1,5 @@
 {
+  "title": "MXPRO",
   "description": "A comprehensive SaaS platform managing events, registrations, payments, and user roles with advanced analytics and automation for organizers and participants.",
   "robots": {
     "index": false

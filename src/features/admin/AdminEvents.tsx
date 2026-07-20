@@ -12,6 +12,7 @@ import { useAuth } from "../../context/AuthContext";
 import {
   fetchAllEvents, createEvent, updateEvent,
   publishEvent, unpublishEvent, archiveEvent, cancelEvent, duplicateEvent, deleteEvent,
+  uploadEventImage, uploadEventAttachment,
 } from "../../services/events";
 import type { EventSummary, EventDetail, EventFormData } from "../../types/events";
 import { format } from "date-fns";
@@ -87,11 +88,57 @@ export function AdminEvents() {
     if (!user) return;
     setSaving(true);
     try {
+      const { coverFile, bannerFile, galleryFiles, ...restForm } = form;
+
       if (editingEvent) {
-        await updateEvent(editingEvent.id, form);
+        // Process uploads for existing event
+        const processedImages: { coverUrl?: string; bannerUrl?: string; galleryUrls?: string[] } = {};
+        if (coverFile) processedImages.coverUrl = await uploadEventImage(editingEvent.id, coverFile, "cover");
+        if (bannerFile) processedImages.bannerUrl = await uploadEventImage(editingEvent.id, bannerFile, "banner");
+        if (galleryFiles && galleryFiles.length > 0) {
+          processedImages.galleryUrls = await Promise.all(
+            galleryFiles.map((f) => uploadEventImage(editingEvent.id, f, "gallery"))
+          );
+        }
+
+        // Upload new attachments
+        const formAttachments = form.attachments ?? [];
+        const attachmentsWithPaths = await Promise.all(
+          formAttachments.map(async (att) => {
+            if (att.filePath) return att; // already uploaded
+            if (!att.file) return att;
+            const filePath = await uploadEventAttachment(editingEvent.id, att.file);
+            return { ...att, filePath, mimeType: att.mimeType ?? att.file.type, fileSize: att.fileSize ?? att.file.size };
+          })
+        );
+
+        await updateEvent(editingEvent.id, { ...restForm, attachments: attachmentsWithPaths }, processedImages);
       } else {
-        await createEvent(form, user.id);
+        // Create event first (no files yet), then upload files
+        const created = await createEvent(restForm, user.id);
+        const processedImages: { coverUrl?: string; bannerUrl?: string; galleryUrls?: string[] } = {};
+
+        if (coverFile) processedImages.coverUrl = await uploadEventImage(created.id, coverFile, "cover");
+        if (bannerFile) processedImages.bannerUrl = await uploadEventImage(created.id, bannerFile, "banner");
+        if (galleryFiles && galleryFiles.length > 0) {
+          processedImages.galleryUrls = await Promise.all(
+            galleryFiles.map((f) => uploadEventImage(created.id, f, "gallery"))
+          );
+        }
+
+        // Upload attachments and update event with URLs
+        const formAttachments = form.attachments ?? [];
+        if (formAttachments.length > 0 || processedImages.coverUrl || processedImages.bannerUrl) {
+          const attachmentsWithPaths = await Promise.all(
+            formAttachments.map(async (att) => {
+              const filePath = await uploadEventAttachment(created.id, att.file);
+              return { ...att, filePath, mimeType: att.mimeType ?? att.file.type, fileSize: att.fileSize ?? att.file.size };
+            })
+          );
+          await updateEvent(created.id, { attachments: attachmentsWithPaths }, processedImages);
+        }
       }
+
       setModalOpen(false);
       setEditingEvent(null);
       await load();
@@ -161,8 +208,8 @@ export function AdminEvents() {
     <div className="p-6 space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl text-white">Eventos</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">
+          <h1 className="font-display font-bold text-2xl text-foreground">Eventos</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             {loading ? "Carregando..." : `${events.length} eventos cadastrados`}
           </p>
         </div>
@@ -178,7 +225,7 @@ export function AdminEvents() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
           <input value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar evento..."
-            className="w-full h-9 pl-9 pr-3 bg-zinc-900 border border-zinc-800 rounded-[5px] text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-rose-800 transition-colors" />
+            className="w-full h-9 pl-9 pr-3 bg-input border border-border rounded-[5px] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-rose-800 transition-colors" />
         </div>
         <div className="flex gap-2">
           {(["all", "registration_open", "upcoming", "running", "finished", "cancelled"] as const).map((s) => (
@@ -199,44 +246,44 @@ export function AdminEvents() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-zinc-800">
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider">Evento</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden md:table-cell">Data</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden lg:table-cell">Local</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider">Status</th>
-                <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider">Pub.</th>
-                <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden sm:table-cell">Pilotos</th>
-                <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-zinc-600 uppercase tracking-wider hidden sm:table-cell">Taxa</th>
+                <tr className="border-b border-border">
+                  <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider">Evento</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden md:table-cell">Data</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden lg:table-cell">Local</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider">Status</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider">Pub.</th>
+                  <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden sm:table-cell">Pilotos</th>
+                  <th className="text-right px-4 py-3 text-[10px] font-mono font-medium text-muted-foreground/70 uppercase tracking-wider hidden sm:table-cell">Taxa</th>
                 <th className="w-10" />
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} className="text-center py-12 text-zinc-500 text-sm">Carregando...</td></tr>
+                <tr><td colSpan={8} className="text-center py-12 text-muted-foreground text-sm">Carregando...</td></tr>
               ) : filtered.map((event, i) => (
                 <motion.tr key={event.id}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.03 }}
-                  className="border-b border-zinc-800/60 last:border-0 hover:bg-zinc-900/30 transition-colors">
+                  className="border-b border-border/60 last:border-0 hover:bg-muted/30 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-zinc-800 rounded-[4px] flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-muted rounded-[4px] flex items-center justify-center flex-shrink-0">
                         <Flag className="w-3.5 h-3.5 text-rose-500" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-zinc-200 truncate max-w-[200px]">{event.title}</p>
-                        <p className="text-[11px] text-zinc-600 font-mono truncate max-w-[200px]">{event.championshipName ?? ""}</p>
+                        <p className="text-sm font-medium text-foreground truncate max-w-[200px]">{event.title}</p>
+                        <p className="text-[11px] text-muted-foreground/70 font-mono truncate max-w-[200px]">{event.championshipName ?? ""}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
-                    <p className="text-xs text-zinc-400 font-mono">
+                    <p className="text-xs text-muted-foreground font-mono">
                       {format(new Date(event.startDate), "dd/MM/yy")} – {format(new Date(event.endDate), "dd/MM/yy")}
                     </p>
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
-                    <p className="text-xs text-zinc-400 truncate max-w-[120px]">{event.city}, {event.state}</p>
+                    <p className="text-xs text-muted-foreground truncate max-w-[120px]">{event.city}, {event.state}</p>
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant={EV_STATUS_VARIANTS[event.eventStatus] ?? "default"} dot={event.eventStatus === "registration_open"}>
@@ -249,25 +296,25 @@ export function AdminEvents() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell text-right">
-                    <p className="text-xs font-mono text-zinc-300">{event.registeredPilots}/{event.maxPilots}</p>
+                    <p className="text-xs font-mono text-foreground/80">{event.registeredPilots}/{event.maxPilots}</p>
                     {event.maxPilots > 0 && (
-                      <div className="mt-1 h-1 w-16 ml-auto bg-zinc-800 rounded-full overflow-hidden">
+                      <div className="mt-1 h-1 w-16 ml-auto bg-muted rounded-full overflow-hidden">
                         <div className="h-full bg-rose-700 rounded-full"
                           style={{ width: `${Math.min((event.registeredPilots / event.maxPilots) * 100, 100)}%` }} />
                       </div>
                     )}
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell text-right">
-                    <p className="font-mono text-sm font-bold text-zinc-200">R$ {event.entryFee}</p>
+                    <p className="font-mono text-sm font-bold text-foreground">R$ {event.entryFee}</p>
                   </td>
                   <td className="px-4 py-3">
                     <div className="relative">
                       <button onClick={() => setOpenMenuId(openMenuId === event.id ? null : event.id)}
-                        className="w-7 h-7 flex items-center justify-center rounded-[4px] text-zinc-600 hover:text-zinc-300 hover:bg-zinc-800 transition-colors">
+                        className="w-7 h-7 flex items-center justify-center rounded-[4px] text-muted-foreground/70 hover:text-foreground hover:bg-muted transition-colors">
                         <MoreHorizontal className="w-4 h-4" />
                       </button>
                       {openMenuId === event.id && (
-                        <div className="absolute right-0 top-8 w-48 bg-zinc-900 border border-zinc-700 rounded-[6px] shadow-xl z-10 py-1">
+                        <div className="absolute right-0 top-8 w-48 bg-card border border-zinc-700 rounded-[6px] shadow-xl z-10 py-1">
                           <ActionItem icon={Edit2} label="Editar evento" onClick={() => { setOpenMenuId(null); handleEdit(event.id); }} />
                           <ActionItem icon={Copy} label="Duplicar" onClick={() => { setOpenMenuId(null); handleDuplicate(event.id); }} />
                           {event.publicationStatus !== "published" ? (
@@ -292,7 +339,7 @@ export function AdminEvents() {
         {!loading && filtered.length === 0 && (
           <div className="text-center py-16">
             <Flag className="w-8 h-8 text-zinc-700 mx-auto mb-2" />
-            <p className="text-zinc-500 text-sm">Nenhum evento encontrado</p>
+            <p className="text-muted-foreground text-sm">Nenhum evento encontrado</p>
           </div>
         )}
       </Card>
@@ -317,7 +364,7 @@ function ActionItem({ icon: Icon, label, onClick, danger }: {
   return (
     <button onClick={onClick}
       className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors ${
-        danger ? "text-rose-400 hover:bg-rose-950/50" : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+        danger ? "text-rose-400 hover:bg-rose-950/50" : "text-muted-foreground hover:text-foreground hover:bg-muted"
       }`}>
       <Icon className="w-3.5 h-3.5" />
       {label}

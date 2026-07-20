@@ -20,7 +20,7 @@ export function Card({ children, className = "", hover, glow, padding = "md", on
   return (
     <div
       onClick={onClick}
-      className={`bg-[#111113] border border-zinc-800/60 rounded-[8px] ${paddingStyles[padding]} ${hover ? "hover:border-zinc-700 hover:bg-zinc-900/80 transition-all duration-200 cursor-pointer" : ""} ${glow ? "glow-red" : ""} ${onClick ? "cursor-pointer" : ""} ${className}`}
+      className={`bg-card border border-border/60 rounded-[8px] ${paddingStyles[padding]} ${hover ? "hover:border-border hover:bg-muted/80 transition-all duration-200 cursor-pointer" : ""} ${glow ? "glow-red" : ""} ${onClick ? "cursor-pointer" : ""} ${className}`}
     >
       {children}
     </div>
@@ -43,9 +43,9 @@ export function CardHeader({ children, className = "", action }: CardHeaderProps
 }
 
 export function CardTitle({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <h3 className={`font-display font-semibold text-zinc-100 text-[15px] leading-tight ${className}`}>{children}</h3>;
+  return <h3 className={`font-display font-semibold text-foreground text-[15px] leading-tight ${className}`}>{children}</h3>;
 }
 
 export function CardDescription({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`text-zinc-500 text-sm mt-0.5 ${className}`}>{children}</p>;
+  return <p className={`text-muted-foreground text-sm mt-0.5 ${className}`}>{children}</p>;
 }

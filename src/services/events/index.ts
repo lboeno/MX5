@@ -2,7 +2,7 @@ export { getUpcomingEvents, getFeaturedEvents, fetchEvents, getEventBySlug, getE
 export { createEvent } from "./create";
 export { updateEvent } from "./update";
 export { publishEvent, unpublishEvent, archiveEvent, cancelEvent, duplicateEvent, deleteEvent } from "./publish";
-export { uploadEventImage, deleteEventImage } from "./storage";
+export { uploadEventImage, uploadEventAttachment, deleteEventImage } from "./storage";
 export { fetchCategories } from "./categories";
 export { fetchChampionships } from "./championships";
 export { fetchTracks } from "./tracks";

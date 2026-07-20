@@ -8,7 +8,7 @@ export function Forbidden() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#09090b] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="text-center max-w-sm">
         <ShieldX className="w-16 h-16 text-rose-600 mx-auto mb-4" />
         <h1 className="font-display font-bold text-2xl text-white mb-2">Acesso Negado</h1>

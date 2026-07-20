@@ -90,12 +90,12 @@ export function ProfilePanel({ open, onClose }: ProfilePanelProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.25 }}
-            className="fixed right-0 top-0 z-50 h-full w-full max-w-sm bg-[#0c0c0e] border-l border-zinc-800 shadow-2xl flex flex-col"
+            className="fixed right-0 top-0 z-50 h-full w-full max-w-sm bg-background border-l border-border shadow-2xl flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
-              <h2 className="font-display font-semibold text-[15px] text-white">Meu Perfil</h2>
-              <button onClick={onClose} className="p-1 rounded-md hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+              <h2 className="font-display font-semibold text-[15px] text-foreground">Meu Perfil</h2>
+              <button onClick={onClose} className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -108,19 +108,19 @@ export function ProfilePanel({ open, onClose }: ProfilePanelProps) {
                   <img
                     src={photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(name || "U")}&background=292524&color=fafafa&size=96`}
                     alt=""
-                    className="w-24 h-24 rounded-full object-cover border border-zinc-700"
+                    className="w-24 h-24 rounded-full object-cover border border-border"
                   />
                   <button
                     onClick={() => fileRef.current?.click()}
                     disabled={uploading}
-                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center border-2 border-[#0c0c0e] transition-colors"
+                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center border-2 border-background transition-colors"
                     title="Alterar foto"
                   >
                     {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
                   </button>
                   <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
                 </div>
-                <span className="text-xs px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-foreground/80 border border-border">
                   {profile?.role ? ROLE_LABEL[profile.role] ?? profile.role : "—"}
                 </span>
               </div>
@@ -163,7 +163,7 @@ export function ProfilePanel({ open, onClose }: ProfilePanelProps) {
             </div>
 
             {/* Footer */}
-            <div className="px-5 py-4 border-t border-zinc-800 space-y-3">
+            <div className="px-5 py-4 border-t border-border space-y-3">
               <Button
                 variant="primary"
                 size="md"
