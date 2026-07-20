@@ -1,14 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { AdminSidebar } from "../../components/layout/AdminSidebar";
-import { Bell, Search, LogOut, Settings, CheckCheck } from "lucide-react";
+import { Bell, Search, LogOut, Settings, CheckCheck, Loader2, Calendar, Newspaper, Image as ImageIcon, Users, CreditCard } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import {
   fetchNotifications, getUnreadCount, markAsRead, markAllAsRead, subscribeNotifications,
 } from "../../services/notifications";
 import type { AppNotification } from "../../types/notifications";
+import { searchAll, type SearchResult } from "../../services/search";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale/pt-BR";
+
+const RESULT_ICON: Record<SearchResult["type"], typeof Calendar> = {
+  evento: Calendar,
+  noticia: Newspaper,
+  galeria: ImageIcon,
+  piloto: Users,
+  pagamento: CreditCard,
+};
 
 const LEVEL_DOT: Record<AppNotification["level"], string> = {
   info: "bg-blue-500",
@@ -26,6 +35,44 @@ export function AdminLayout() {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [unread, setUnread] = useState(0);
   const notifRef = useRef<HTMLDivElement>(null);
+
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const t = query.trim();
+    if (!t) {
+      setResults([]);
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    const handle = setTimeout(async () => {
+      try {
+        const r = await searchAll(t);
+        setResults(r);
+        setSearchOpen(true);
+      } catch (err) {
+        console.error("[AdminLayout] Erro na busca:", err);
+      } finally {
+        setSearching(false);
+      }
+    }, 250);
+    return () => clearTimeout(handle);
+  }, [query]);
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
 
   const load = useCallback(async () => {
     if (!user) return;
@@ -97,12 +144,64 @@ export function AdminLayout() {
       <div className={`flex-1 flex flex-col min-w-0 transition-all duration-200 ${collapsed ? "ml-14" : "ml-56"}`}>
         {/* Top bar */}
         <header className="h-14 border-b border-border bg-background/95 backdrop-blur-sm flex items-center gap-3 px-4 flex-shrink-0 sticky top-0 z-30">
-          <div className="relative flex-1 max-w-xs">
+          <div className="relative flex-1 max-w-xs" ref={searchRef}>
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/70" />
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => query.trim() && setSearchOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const first = results[0];
+                  if (first) {
+                    setSearchOpen(false);
+                    navigate(first.link);
+                  }
+                }
+                if (e.key === "Escape") setSearchOpen(false);
+              }}
               placeholder="Busca rápida..."
-              className="w-full h-8 pl-8 pr-3 bg-input border border-border rounded-[4px] text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-zinc-700 transition-colors"
+              className="w-full h-8 pl-8 pr-8 bg-input border border-border rounded-[4px] text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-zinc-700 transition-colors"
             />
+            {searching && (
+              <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/70 animate-spin" />
+            )}
+            {searchOpen && query.trim() && (
+              <div className="absolute left-0 right-0 mt-2 max-h-96 overflow-y-auto bg-card border border-border rounded-[8px] shadow-2xl z-50 p-1">
+                {results.length === 0 && !searching ? (
+                  <p className="text-center text-sm text-muted-foreground py-8">
+                    Nenhum resultado para "{query.trim()}"
+                  </p>
+                ) : (
+                  results.map((r) => {
+                    const Icon = RESULT_ICON[r.type];
+                    return (
+                      <button
+                        key={`${r.type}-${r.id}`}
+                        onClick={() => {
+                          setSearchOpen(false);
+                          navigate(r.link);
+                        }}
+                        className="w-full text-left flex items-center gap-3 px-3 py-2 rounded-[6px] hover:bg-muted/50 transition-colors"
+                      >
+                        <span className="w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-[4px] bg-muted text-muted-foreground">
+                          <Icon className="w-3.5 h-3.5" />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-medium text-foreground truncate">{r.label}</p>
+                          {r.sublabel && (
+                            <p className="text-[10px] text-muted-foreground/80 truncate">{r.sublabel}</p>
+                          )}
+                        </div>
+                        <span className="text-[10px] uppercase tracking-wide text-muted-foreground/60 flex-shrink-0">
+                          {r.type}
+                        </span>
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            )}
           </div>
           <div className="ml-auto flex items-center gap-2">
             <div className="relative" ref={notifRef}>
