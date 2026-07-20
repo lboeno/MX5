@@ -45,6 +45,7 @@ import { signUp, login } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
 import { ROUTES } from "../../lib/routes";
 import { useAuth } from "../../context/AuthContext";
+import { isAdminRole } from "../../lib/roles";
 import { getCategoryId } from "../../lib/categories";
 import { fetchMyPilot } from "../../lib/pilots";
 import { uploadFile, saveDocuments, deleteFile } from "../../lib/storage";
@@ -530,7 +531,7 @@ export function Registrar() {
                 variant="outline"
                 size="md"
                 fullWidth
-                onClick={() => navigate(profile?.role === "admin" || profile?.role === "organizer" ? ROUTES.ADMIN : ROUTES.PILOT)}
+                onClick={() => navigate(isAdminRole(profile?.role) || profile?.role === "organizer" ? ROUTES.ADMIN : ROUTES.PILOT)}
               >
                 Ir para perfil
               </Button>

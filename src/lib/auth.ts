@@ -4,7 +4,7 @@ export interface Profile {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "organizer" | "pilot" | "team" | "guest";
+  role: "superadmin" | "admin" | "organizer" | "pilot" | "team" | "guest";
   phone?: string;
   photo_url?: string;
   created_at: string;

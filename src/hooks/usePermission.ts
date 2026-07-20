@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
+import { isAdminRole } from "../lib/roles";
 
 type PermissionCache = Record<string, boolean>;
 
@@ -14,7 +15,7 @@ export function usePermission() {
     async (screen: string): Promise<boolean> => {
       if (!user || !profile) return false;
 
-      if (profile.role === "admin") return true;
+      if (isAdminRole(profile.role)) return true;
 
       if (screen in cacheRef.current) {
         return cacheRef.current[screen];

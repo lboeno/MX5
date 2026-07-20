@@ -65,6 +65,7 @@ export interface ProfileWithPermissions {
 
 export function getDefaultScreens(role: string): Record<string, boolean> {
   switch (role) {
+    case "superadmin":
     case "admin":
       return Object.fromEntries(ALL_SCREENS.map((s) => [s, true]));
     case "organizer":

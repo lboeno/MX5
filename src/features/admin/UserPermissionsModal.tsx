@@ -5,6 +5,7 @@ import { Button } from "../../components/ui/Button";
 import { getUserPermissions, setUserPermission, resetUserPermissions } from "../../services/admin/permissions";
 import type { ProfileWithPermissions } from "../../types/permissions";
 import { SCREEN_GROUPS, SCREEN_LABELS, ALL_SCREENS, getDefaultScreens } from "../../types/permissions";
+import { isAdminRole } from "../../lib/roles";
 
 interface UserPermissionsModalProps {
   user: ProfileWithPermissions;
@@ -25,7 +26,7 @@ export function UserPermissionsModal({ user, onClose, onSaved }: UserPermissions
         const data = await getUserPermissions(user.id);
         const allDefaults = getDefaultScreens(data.role);
         const merged = { ...allDefaults, ...data.overrides };
-        setDefaults(data.role === "admin" ? allDefaults : data.defaults);
+        setDefaults(isAdminRole(data.role) ? allDefaults : data.defaults);
         setScreens(merged);
       } catch (err) {
         console.error("Erro ao carregar permissões:", err);

@@ -9,6 +9,7 @@ import {
 import { Badge } from "../ui/Badge";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../context/AuthContext";
+import { isAdminRole } from "../../lib/roles";
 import { ProfilePanel } from "./ProfilePanel";
 
 type NavItem = {
@@ -101,7 +102,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
     async function loadPermissions() {
       if (!user || !profile) return;
 
-      if (profile.role === "admin") {
+      if (isAdminRole(profile.role)) {
         setAllowedScreens(new Set(NAV_GROUPS.flatMap((g) => g.items.map((i) => i.screen))));
         return;
       }
