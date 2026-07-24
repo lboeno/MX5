@@ -46,10 +46,10 @@ import { ROUTES } from "../../lib/routes";
 import { useAuth } from "../../context/AuthContext";
 import { isAdminRole } from "../../lib/roles";
 import { getCategoryId } from "../../lib/categories";
-import { fetchMyPilot, createPilot } from "../../lib/pilots";
+import { fetchMyPilot } from "../../lib/pilots";
 import { uploadFile, saveDocuments, deleteFile } from "../../lib/storage";
 import type { DocumentType } from "../../lib/storage";
-import { DOCUMENT_TYPES, DOCUMENT_LABELS, normalizeDocumentNumber } from "../../domain/document";
+import { normalizeDocumentNumber } from "../../domain/document";
 
 type RegistrationDocuments = {
   photo: File | null;
