@@ -4,7 +4,8 @@ import { Select } from "../../components/ui/Select";
 import { FileUpload } from "../../components/ui/FileUpload";
 import { Checkbox } from "../../components/ui/Checkbox";
 import type { RegistrationFormData } from "../../utils/validation";
-import { formatCPF, formatPhone, formatCEP, formatDate, formatLandline } from "../../utils/format";
+import { formatPhone, formatCEP, formatDate, formatLandline } from "../../utils/format";
+import { DOCUMENT_TYPES, DOCUMENT_LABELS } from "../../domain/document";
 import { Camera, Globe, Video, CheckCircle } from "lucide-react";
 import { CATEGORY_OPTIONS as CATEGORIES } from "./categorias";
 
@@ -81,24 +82,27 @@ export function Step1PersonalData({ control, register, errors, setValue }: Step1
             />
           </div>
 
-          <Input
-            label="CPF"
-            placeholder="000.000.000-00"
-            required
-            error={errors.cpf?.message}
-            {...register("cpf", {
-              onChange: (e) => {
-                e.target.value = formatCPF(e.target.value);
-              },
-            })}
+          <Controller
+            control={control}
+            name="documentType"
+            render={({ field }) => (
+              <Select
+                label="Tipo de Documento"
+                required
+                error={errors.documentType?.message}
+                options={DOCUMENT_TYPES.map((t) => ({ value: t, label: DOCUMENT_LABELS[t] }))}
+                placeholder="Selecione"
+                {...field}
+              />
+            )}
           />
 
           <Input
-            label="RG"
-            placeholder="Digite seu RG"
+            label="Número do Documento"
+            placeholder="Digite o número do documento"
             required
-            error={errors.rg?.message}
-            {...register("rg")}
+            error={errors.documentNumber?.message}
+            {...register("documentNumber")}
           />
 
           <Input

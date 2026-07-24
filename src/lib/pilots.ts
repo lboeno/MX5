@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 import { getCategoryId, toAppCategoryName } from "./categories";
 import type { Pilot } from "../types";
+import { normalizeDocumentNumber } from "../domain/document";
 
 function mapPilot(row: any): Pilot {
   const categoryName = row.categories?.name ?? row.category_name ?? row.competition_category;
@@ -9,6 +10,8 @@ function mapPilot(row: any): Pilot {
     id: row.id,
     profileId: row.profile_id ?? "",
     number: row.number ?? row.bike_number ?? "",
+    documentType: row.document_type ?? undefined,
+    documentNumber: row.document_number ?? undefined,
     name: row.name ?? row.full_name ?? "Sem nome",
     nickname: row.nickname ?? undefined,
     photo: row.photo_url ?? undefined,
@@ -92,8 +95,15 @@ export async function fetchMyPilot() {
 export async function createPilot(data: Partial<Pilot> & { profile_id: string }) {
   const categoryId = await getCategoryId(data.category);
 
+  const documentType = data.documentType ?? null;
+  const documentNumber = data.documentNumber
+    ? normalizeDocumentNumber(data.documentNumber, documentType as any)
+    : null;
+
   const { error } = await supabase.from("pilots").insert({
     profile_id: data.profile_id,
+    document_type: documentType,
+    document_number: documentNumber,
     name: data.name,
     nickname: data.nickname ?? null,
     photo_url: data.photo ?? null,

@@ -1,3 +1,5 @@
+import type { DocumentType } from "../domain/document";
+
 export type UserRole =
   | "admin"
   | "organizer"
@@ -56,6 +58,8 @@ export interface Pilot {
   id: string;
   profileId: string;
   number: string;
+  documentType?: DocumentType;
+  documentNumber?: string;
   name: string;
   nickname?: string;
   photo?: string;

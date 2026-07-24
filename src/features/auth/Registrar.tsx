@@ -31,7 +31,6 @@ import { Card, CardTitle } from "../../components/ui/Card";
 
 import { registrationSchema, type RegistrationFormData } from "../../utils/validation";
 import {
-  formatCPF,
   formatPhone,
   formatLandline,
   formatCEP,
@@ -47,9 +46,10 @@ import { ROUTES } from "../../lib/routes";
 import { useAuth } from "../../context/AuthContext";
 import { isAdminRole } from "../../lib/roles";
 import { getCategoryId } from "../../lib/categories";
-import { fetchMyPilot } from "../../lib/pilots";
+import { fetchMyPilot, createPilot } from "../../lib/pilots";
 import { uploadFile, saveDocuments, deleteFile } from "../../lib/storage";
 import type { DocumentType } from "../../lib/storage";
+import { DOCUMENT_TYPES, DOCUMENT_LABELS, normalizeDocumentNumber } from "../../domain/document";
 
 type RegistrationDocuments = {
   photo: File | null;
@@ -156,8 +156,8 @@ export function Registrar() {
     mode: "onChange",
     defaultValues: {
       fullName: "",
-      cpf: "",
-      rg: "",
+      documentType: "",
+      documentNumber: "",
       birthDate: "",
       gender: "",
       maritalStatus: "",
@@ -299,7 +299,7 @@ export function Registrar() {
   const getFieldsForStep = (step: number): (keyof RegistrationFormData)[] => {
     switch (step) {
       case 0:
-        return ["fullName", "cpf", "rg", "birthDate", "gender", "cep", "street", "number", "neighborhood", "city", "state", "phone", "email", "password", "confirmPassword"];
+        return ["fullName", "documentType", "documentNumber", "birthDate", "gender", "cep", "street", "number", "neighborhood", "city", "state", "phone", "email", "password", "confirmPassword"];
       case 1:
         return ["emergencyName", "emergencyPhone", "emergencyRelation"];
       case 2:
@@ -356,10 +356,16 @@ export function Registrar() {
 
       if (!pilotId) {
         const pilotCategoryId = await getCategoryId(data.competitionCategory);
+        const docType = data.documentType || null;
+        const docNumber = data.documentNumber
+          ? normalizeDocumentNumber(data.documentNumber, data.documentType as any)
+          : null;
         const { data: pilotData, error: pilotError } = await supabase
           .from("pilots")
           .insert({
             profile_id: userId,
+            document_type: docType,
+            document_number: docNumber,
             name: data.fullName,
             number: data.bikeNumber || null,
             category_id: pilotCategoryId,
@@ -384,8 +390,6 @@ export function Registrar() {
           profile_id: userId,
           registration_number: number,
           full_name: data.fullName,
-          cpf: data.cpf,
-          rg: data.rg,
           birth_date: data.birthDate,
           gender: data.gender,
           marital_status: data.maritalStatus || null,

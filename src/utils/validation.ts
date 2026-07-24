@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { validateCPF, validateEmail } from "../utils/format";
+import { validateEmail } from "../utils/format";
+import { validateDocumentNumber } from "../domain/document";
 
 export const registrationSchema = z.object({
   // Dados Pessoais
   fullName: z.string().min(3, "Nome completo é obrigatório"),
-  cpf: z.string().refine((val) => validateCPF(val), "CPF inválido"),
-  rg: z.string().min(5, "RG é obrigatório"),
+  documentType: z.string().min(1, "Tipo de documento é obrigatório"),
+  documentNumber: z.string().min(1, "Número do documento é obrigatório"),
   birthDate: z.string().refine((val) => {
     if (!val) return false;
     const date = new Date(val.split("/").reverse().join("-"));
@@ -64,6 +65,13 @@ export const registrationSchema = z.object({
   acceptsRegulations: z.boolean().refine((val) => val === true, "É necessário aceitar o regulamento"),
   acceptsPrivacy: z.boolean().refine((val) => val === true, "É necessário aceitar a política de privacidade"),
   acceptsTruthfulness: z.boolean().refine((val) => val === true, "É necessário confirmar a veracidade"),
+}).refine((data) => {
+  const error = validateDocumentNumber(data.documentNumber, data.documentType as any);
+  if (error) return false;
+  return true;
+}, {
+  message: "Documento inválido",
+  path: ["documentNumber"],
 }).refine((data) => {
   if (data.password !== data.confirmPassword) {
     return false;

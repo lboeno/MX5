@@ -293,14 +293,21 @@ export function AdminPilots() {
                       <p className="font-mono text-xs text-muted-foreground">{pilot.wins}V / {pilot.podiums}P</p>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
-                      <button
-                        onClick={() => openDocumentViewer(pilot.id)}
-                        disabled={docViewerLoading}
-                        className="flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-50"
-                      >
-                        {docViewerLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-                        Ver
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {pilot.documentType && pilot.documentNumber && (
+                          <span className="text-[11px] text-muted-foreground font-mono truncate max-w-[100px]" title={`${pilot.documentType}: ${pilot.documentNumber}`}>
+                            {pilot.documentType} {pilot.documentNumber}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => openDocumentViewer(pilot.id)}
+                          disabled={docViewerLoading}
+                          className="flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-50"
+                        >
+                          {docViewerLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+                          Ver
+                        </button>
+                      </div>
                     </td>
                     <td className="px-4 py-3">
                       <Badge variant={pilot.status === "active" ? "success" : pilot.status === "suspended" ? "danger" : "default"}>
