@@ -5,7 +5,7 @@ import { FileUpload } from "../../components/ui/FileUpload";
 import { Checkbox } from "../../components/ui/Checkbox";
 import type { RegistrationFormData } from "../../utils/validation";
 import { formatPhone, formatCEP, formatDate, formatLandline } from "../../utils/format";
-import { DOCUMENT_TYPES, DOCUMENT_LABELS } from "../../domain/document";
+import { DOCUMENT_TYPES, DOCUMENT_LABELS, maskDocumentInput } from "../../domain/document";
 import { Camera, Globe, Video, CheckCircle } from "lucide-react";
 import { CATEGORY_OPTIONS as CATEGORIES } from "./categorias";
 
@@ -97,12 +97,25 @@ export function Step1PersonalData({ control, register, errors, setValue }: Step1
             )}
           />
 
-          <Input
-            label="Número do Documento"
-            placeholder="Digite o número do documento"
-            required
-            error={errors.documentNumber?.message}
-            {...register("documentNumber")}
+          <Controller
+            control={control}
+            name="documentNumber"
+            render={({ field }) => {
+              const docType = control._formValues.documentType as any;
+              return (
+                <Input
+                  label="Número do Documento"
+                  placeholder="Digite o número do documento"
+                  required
+                  error={errors.documentNumber?.message}
+                  value={field.value}
+                  onChange={(e) => {
+                    const masked = docType ? maskDocumentInput(e.target.value, docType) : e.target.value;
+                    field.onChange(masked);
+                  }}
+                />
+              );
+            }}
           />
 
           <Input

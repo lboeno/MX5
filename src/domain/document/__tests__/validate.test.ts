@@ -52,43 +52,4 @@ describe("validateDocumentNumber", () => {
     });
   });
 
-  describe("CNH", () => {
-    it("aceita CNH válida", () => {
-      expect(validateDocumentNumber("35189261190", "CNH")).toBeNull();
-    });
-
-    it("rejeita CNH inválida", () => {
-      expect(validateDocumentNumber("12345678901", "CNH")).toBe("CNH inválida");
-    });
-  });
-
-  describe("PASSPORT", () => {
-    it("aceita passaporte válido", () => {
-      expect(validateDocumentNumber("AB123456", "PASSPORT")).toBeNull();
-    });
-
-    it("rejeita passaporte muito curto", () => {
-      expect(validateDocumentNumber("AB12", "PASSPORT")).toBe("Passaporte deve ter entre 5 e 9 caracteres");
-    });
-  });
-
-  describe("RNE", () => {
-    it("aceita RNE válido", () => {
-      expect(validateDocumentNumber("V634251-7", "RNE")).toBeNull();
-    });
-
-    it("rejeita RNE muito curto", () => {
-      expect(validateDocumentNumber("AB", "RNE")).toBe("RNE deve ter entre 3 e 20 caracteres");
-    });
-  });
-
-  describe("OTHER", () => {
-    it("aceita outro documento", () => {
-      expect(validateDocumentNumber("Qualquer documento válido", "OTHER")).toBeNull();
-    });
-
-    it("rejeita outro muito curto", () => {
-      expect(validateDocumentNumber("A", "OTHER")).toBe("Deve ter entre 2 e 50 caracteres");
-    });
-  });
 });

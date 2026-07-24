@@ -7,7 +7,7 @@ ALTER TABLE pilots ADD CONSTRAINT pilots_document_type_check
     (document_type IS NULL AND document_number IS NULL)
     OR
     (
-      document_type IN ('CPF','RG','CIN','CNH','PASSPORT','RNE','OTHER')
+      document_type IN ('CPF','RG','CIN')
       AND length(trim(document_number)) > 0
     )
   );
